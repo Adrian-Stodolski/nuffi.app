@@ -64,6 +64,20 @@ const Sidebar: React.FC = () => {
       label: 'Community Hub',
       icon: Users,
       description: 'Connect with developers'
+    },
+    {
+      id: 'v3-ultimate',
+      path: '/v3-ultimate',
+      label: '🧪 V3 Ultimate Test',
+      icon: Zap,
+      description: 'Test dashboard design'
+    },
+    {
+      id: 'wow-factor',
+      path: '/wow-factor',
+      label: '✨ Wow Factor Demo',
+      icon: Wand2,
+      description: '2025 AI design trends'
     }
   ];
 
@@ -106,54 +120,64 @@ const Sidebar: React.FC = () => {
 
   return (
     <motion.div 
-      className="w-64 h-full bg-gray-900 border-r border-gray-800 flex flex-col relative overflow-hidden"
+      className="w-64 h-full glass-sidebar flex flex-col relative overflow-hidden"
       initial={{ x: -100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
     >
-      {/* Subtle animated background */}
+      {/* AI-Enhanced animated background */}
       <motion.div
-        className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
+        className="absolute inset-0"
         animate={{
           background: [
-            "linear-gradient(135deg, #111827 0%, #1f2937 50%, #111827 100%)",
-            "linear-gradient(135deg, #1f2937 0%, #111827 50%, #1f2937 100%)",
-            "linear-gradient(135deg, #111827 0%, #1f2937 50%, #111827 100%)"
+            "radial-gradient(circle at 20% 20%, rgba(0, 191, 255, 0.1) 0%, transparent 50%)",
+            "radial-gradient(circle at 80% 80%, rgba(76, 175, 80, 0.1) 0%, transparent 50%)",
+            "radial-gradient(circle at 20% 20%, rgba(0, 191, 255, 0.1) 0%, transparent 50%)"
           ]
         }}
-        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
       />
 
-      {/* Header */}
+      {/* Header with Glassmorphism */}
       <motion.div 
-        className="p-4 border-b border-gray-800 relative z-10"
+        className="p-6 border-b border-white/10 relative z-10"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
         <div className="flex items-center space-x-3">
           <motion.div 
-            className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center shadow-lg"
+            className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg ai-glow"
             whileHover={{ scale: 1.1, rotate: 5 }}
             whileTap={{ scale: 0.9 }}
             animate={{ 
               boxShadow: [
-                "0 0 10px rgba(34, 197, 94, 0.3)",
-                "0 0 20px rgba(34, 197, 94, 0.5)",
-                "0 0 10px rgba(34, 197, 94, 0.3)"
+                "0 0 15px rgba(0, 191, 255, 0.4)",
+                "0 0 25px rgba(0, 191, 255, 0.6)",
+                "0 0 15px rgba(0, 191, 255, 0.4)"
               ]
             }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            <span className="text-white font-bold text-sm">N</span>
+            <span className="text-white font-bold text-lg">N</span>
           </motion.div>
-          <motion.span 
-            className="font-semibold text-lg text-white"
-            animate={{ opacity: [0.8, 1, 0.8] }}
-            transition={{ duration: 3, repeat: Infinity }}
-          >
-            NUFFI
-          </motion.span>
+          <div>
+            <motion.h1 
+              className="font-bold text-xl text-gradient-ai"
+              animate={{ opacity: [0.8, 1, 0.8] }}
+              transition={{ duration: 3, repeat: Infinity }}
+            >
+              NUFFI
+            </motion.h1>
+            <motion.p 
+              className="text-xs text-gray-400"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              AI Dev Environment
+            </motion.p>
+          </div>
         </div>
       </motion.div>
 

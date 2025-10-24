@@ -54,26 +54,30 @@ const WorkspaceHub: React.FC = () => {
   }
 
   return (
-    <div className="h-full bg-gray-900 text-white overflow-hidden">
-      {/* Subtle animated background particles */}
+    <div className="h-full overflow-hidden relative">
+      {/* AI-Enhanced floating particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(15)].map((_, i) => (
+        {[...Array(20)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 bg-green-500/20 rounded-full"
+            className="absolute w-2 h-2 rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
+              background: i % 3 === 0 ? 'rgba(0, 191, 255, 0.3)' : 
+                         i % 3 === 1 ? 'rgba(76, 175, 80, 0.3)' : 
+                         'rgba(139, 92, 246, 0.3)'
             }}
             animate={{
               opacity: [0, 1, 0],
-              scale: [0, 1, 0],
-              y: [0, -100, 0],
+              scale: [0, 1.5, 0],
+              y: [0, -150, 0],
+              x: [0, Math.random() * 50 - 25, 0],
             }}
             transition={{
-              duration: 4 + Math.random() * 2,
+              duration: 6 + Math.random() * 3,
               repeat: Infinity,
-              delay: Math.random() * 2,
+              delay: Math.random() * 3,
               ease: "easeInOut"
             }}
           />
@@ -93,46 +97,46 @@ const WorkspaceHub: React.FC = () => {
         >
           <div>
             <motion.h1 
-              className="text-2xl font-bold text-white mb-1"
+              className="text-4xl font-bold text-gradient-ai mb-2"
               animate={{ 
                 textShadow: [
-                  "0 0 10px rgba(34, 197, 94, 0.3)",
-                  "0 0 20px rgba(34, 197, 94, 0.5)",
-                  "0 0 10px rgba(34, 197, 94, 0.3)"
+                  "0 0 20px rgba(0, 191, 255, 0.5)",
+                  "0 0 30px rgba(0, 191, 255, 0.8)",
+                  "0 0 20px rgba(0, 191, 255, 0.5)"
                 ]
               }}
               transition={{ duration: 3, repeat: Infinity }}
             >
-              Workspace Hub
+              Environment Hub
             </motion.h1>
             <motion.p 
-              className="text-gray-400 text-sm"
-              animate={{ opacity: [0.7, 1, 0.7] }}
-              transition={{ duration: 2, repeat: Infinity }}
+              className="text-gray-400"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
             >
-              Manage your development environments
+              AI-powered workspace management for developers
             </motion.p>
           </div>
           <Link to="/create">
             <motion.button
-              className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 flex items-center space-x-2 shadow-lg"
+              className="ai-button"
               whileHover={{ 
                 scale: 1.05,
-                boxShadow: "0 10px 25px rgba(34, 197, 94, 0.4)",
-                backgroundColor: "#059669"
+                boxShadow: "0 12px 30px rgba(0, 191, 255, 0.5)"
               }}
               whileTap={{ scale: 0.95 }}
               animate={{
                 boxShadow: [
-                  "0 4px 15px rgba(34, 197, 94, 0.2)",
-                  "0 6px 20px rgba(34, 197, 94, 0.3)",
-                  "0 4px 15px rgba(34, 197, 94, 0.2)"
+                  "0 4px 15px rgba(0, 191, 255, 0.3)",
+                  "0 8px 25px rgba(0, 191, 255, 0.5)",
+                  "0 4px 15px rgba(0, 191, 255, 0.3)"
                 ]
               }}
               transition={{ duration: 2, repeat: Infinity }}
             >
-              <Plus className="w-4 h-4" />
-              <span>New Workspace</span>
+              <Plus className="w-5 h-5" />
+              <span>New Environment</span>
             </motion.button>
           </Link>
         </motion.div>

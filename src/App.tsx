@@ -9,6 +9,8 @@ import AICenter from './pages/AICenter';
 import Community from './pages/Community';
 import SystemScanner from './pages/SystemScanner.tsx';
 import Settings from './pages/Settings';
+import V3Ultimate from './pages/V3Ultimate';
+import WowFactorDemo from './pages/WowFactorDemo';
 
 import './App.css';
 
@@ -29,6 +31,8 @@ function App() {
             <Route path="/community" element={<Community />} />
             <Route path="/scanner" element={<SystemScanner />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/v3-ultimate" element={<V3Ultimate />} />
+            <Route path="/wow-factor" element={<WowFactorDemo />} />
             {/* Placeholder routes for AI features */}
             <Route path="/ai-recommendations" element={<div className="p-6 bg-gray-900 text-white h-full"><h1>AI Recommendations - Coming Soon</h1></div>} />
             <Route path="/preset-wizard" element={<div className="p-6 bg-gray-900 text-white h-full"><h1>Preset Wizard - Coming Soon</h1></div>} />
