@@ -1,5 +1,6 @@
 import React from 'react';
 import { Search, Star, Download, Filter } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Marketplace: React.FC = () => {
   const templates = [
@@ -32,47 +33,89 @@ const Marketplace: React.FC = () => {
     }
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
-    <div className="h-full bg-gray-900 text-white overflow-auto">
+    <div className="h-full overflow-auto relative">
       <div className="p-6">
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-white mb-1">Marketplace</h1>
-          <p className="text-gray-400 text-sm">Browse templates</p>
-        </div>
+        <motion.div 
+          className="mb-6"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 className="text-2xl font-bold text-gradient-ai mb-1">Marketplace</h1>
+          <p className="text-text-secondary text-sm">Browse and discover amazing templates</p>
+        </motion.div>
 
         {/* Search and Filter */}
-        <div className="flex items-center space-x-4 mb-6">
+        <motion.div 
+          className="flex items-center space-x-4 mb-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
           <div className="flex-1 relative">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+            <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-text-muted" />
             <input
               type="text"
               placeholder="Search templates..."
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg pl-10 pr-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-green-500"
+              className="glass-input w-full pl-10"
             />
           </div>
-          <button className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white hover:bg-gray-700 transition-colors flex items-center space-x-2">
+          <motion.button 
+            className="ai-button-secondary flex items-center space-x-2"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
             <Filter className="w-4 h-4" />
             <span>Filter</span>
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
 
         {/* Templates Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
           {templates.map((template) => (
-            <div
+            <motion.div
               key={template.id}
-              className="bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-gray-600 transition-colors"
+              className="glass-card hover-lift"
+              variants={itemVariants}
+              whileHover={{ 
+                scale: 1.02,
+                rotateY: 2,
+                rotateX: 2
+              }}
+              whileTap={{ scale: 0.98 }}
+              style={{ transformStyle: 'preserve-3d' }}
             >
               <div className="mb-4">
-                <h3 className="text-lg font-semibold text-white mb-2">{template.name}</h3>
-                <p className="text-gray-400 text-sm">{template.description}</p>
+                <h3 className="text-lg font-semibold text-text-primary mb-2">{template.name}</h3>
+                <p className="text-text-secondary text-sm">{template.description}</p>
               </div>
 
-              <div className="flex items-center space-x-4 mb-4 text-sm text-gray-500">
+              <div className="flex items-center space-x-4 mb-4 text-sm text-text-muted">
                 <span>by {template.author}</span>
                 <div className="flex items-center space-x-1">
-                  <Star className="w-4 h-4 text-yellow-500" />
+                  <Star className="w-4 h-4 text-accent-orange" />
                   <span>{template.rating}</span>
                 </div>
                 <div className="flex items-center space-x-1">
@@ -85,19 +128,26 @@ const Marketplace: React.FC = () => {
                 {template.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-2 py-1 bg-gray-700 text-gray-300 rounded text-xs"
+                    className="px-2 py-1 bg-accent-blue/10 text-accent-blue rounded border border-accent-blue/20 text-xs backdrop-blur-sm"
                   >
                     {tag}
                   </span>
                 ))}
               </div>
 
-              <button className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 rounded-lg transition-colors">
+              <motion.button 
+                className="ai-button w-full"
+                whileHover={{ 
+                  scale: 1.02,
+                  boxShadow: "0 8px 25px rgba(76, 175, 80, 0.4)"
+                }}
+                whileTap={{ scale: 0.98 }}
+              >
                 Use Template
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );

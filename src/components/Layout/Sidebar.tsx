@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { 
@@ -11,7 +11,8 @@ import {
   Zap,
   Wand2,
   Search,
-  Square
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import { useAppStore } from '../../stores/appStore';
 import toast from 'react-hot-toast';
@@ -19,6 +20,7 @@ import toast from 'react-hot-toast';
 const Sidebar: React.FC = () => {
   const location = useLocation();
   const { scanSystem, loading } = useAppStore();
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const handleSystemScan = async () => {
     try {
@@ -120,9 +122,9 @@ const Sidebar: React.FC = () => {
 
   return (
     <motion.div 
-      className="w-64 h-full glass-sidebar flex flex-col relative overflow-hidden"
+      className={`${isCollapsed ? 'w-20' : 'w-64'} h-full glass-sidebar flex flex-col relative overflow-hidden transition-all duration-300 ease-in-out`}
       initial={{ x: -100, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
+      animate={{ x: 0, opacity: 1, width: isCollapsed ? 80 : 256 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
     >
       {/* AI-Enhanced animated background */}
@@ -140,44 +142,70 @@ const Sidebar: React.FC = () => {
 
       {/* Header with Glassmorphism */}
       <motion.div 
-        className="p-6 border-b border-white/10 relative z-10"
+        className="p-4 border-b border-white/10 relative z-10"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
-        <div className="flex items-center space-x-3">
-          <motion.div 
-            className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg ai-glow"
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            whileTap={{ scale: 0.9 }}
-            animate={{ 
-              boxShadow: [
-                "0 0 15px rgba(0, 191, 255, 0.4)",
-                "0 0 25px rgba(0, 191, 255, 0.6)",
-                "0 0 15px rgba(0, 191, 255, 0.4)"
-              ]
-            }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <span className="text-white font-bold text-lg">N</span>
-          </motion.div>
-          <div>
-            <motion.h1 
-              className="font-bold text-xl text-gradient-ai"
-              animate={{ opacity: [0.8, 1, 0.8] }}
-              transition={{ duration: 3, repeat: Infinity }}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <motion.div 
+              className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg ai-glow"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              whileTap={{ scale: 0.9 }}
+              animate={{ 
+                boxShadow: [
+                  "0 0 15px rgba(0, 191, 255, 0.4)",
+                  "0 0 25px rgba(0, 191, 255, 0.6)",
+                  "0 0 15px rgba(0, 191, 255, 0.4)"
+                ]
+              }}
+              transition={{ duration: 2, repeat: Infinity }}
             >
-              NUFFI
-            </motion.h1>
-            <motion.p 
-              className="text-xs text-gray-400"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-            >
-              AI Dev Environment
-            </motion.p>
+              <span className="text-white font-bold text-lg">N</span>
+            </motion.div>
+            <AnimatePresence>
+              {!isCollapsed && (
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <motion.h1 
+                    className="font-bold text-xl text-gradient-ai"
+                    animate={{ opacity: [0.8, 1, 0.8] }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                  >
+                    NUFFI
+                  </motion.h1>
+                  <motion.p 
+                    className="text-xs text-gray-400"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    AI Dev Environment
+                  </motion.p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
+          
+          {/* Collapse Toggle Button */}
+          <motion.button
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <motion.div
+              animate={{ rotate: isCollapsed ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ChevronLeft className="w-4 h-4 text-gray-400" />
+            </motion.div>
+          </motion.button>
         </div>
       </motion.div>
 
@@ -202,33 +230,64 @@ const Sidebar: React.FC = () => {
               >
                 <Link to={item.path}>
                   <motion.div
-                    className={`flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-all duration-200 cursor-pointer group ${
+                    className={`relative flex items-center ${isCollapsed ? 'justify-center px-3' : 'space-x-3 px-3'} py-3 rounded-lg cursor-pointer group overflow-hidden ${
                       isActive
-                        ? 'bg-gray-800 text-white shadow-lg border-l-2 border-green-500'
-                        : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                        ? 'bg-gradient-to-r from-accent-blue/20 to-accent-green/20 text-white shadow-lg border border-accent-blue/30'
+                        : 'text-gray-400 hover:text-white'
                     }`}
                     whileHover={{ 
-                      scale: 1.02, 
-                      x: 5,
-                      backgroundColor: isActive ? "#1f2937" : "#1f2937"
+                      scale: 1.02,
+                      backgroundColor: isActive ? "rgba(0, 191, 255, 0.15)" : "rgba(255, 255, 255, 0.05)"
                     }}
                     whileTap={{ scale: 0.98 }}
+                    transition={{ duration: 0.2 }}
                   >
+                    {/* Hover background effect */}
                     <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-accent-blue/10 to-accent-green/10 opacity-0 group-hover:opacity-100"
+                      initial={{ x: '-100%' }}
+                      whileHover={{ x: 0 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                    
+                    <motion.div
+                      className="relative z-10"
                       animate={isActive ? { 
-                        scale: [1, 1.2, 1],
+                        scale: [1, 1.1, 1],
                         rotate: [0, 5, -5, 0]
                       } : {}}
                       transition={{ duration: 0.5 }}
+                      whileHover={{ scale: 1.1 }}
                     >
-                      <Icon className={`w-5 h-5 ${isActive ? 'text-green-400' : 'group-hover:text-green-400'} transition-colors`} />
+                      <Icon className={`w-5 h-5 ${isActive ? 'text-accent-blue' : 'group-hover:text-accent-blue'} transition-colors duration-200`} />
                     </motion.div>
-                    <div className="flex-1">
-                      <div className="font-medium text-sm">{item.label}</div>
-                      <div className="text-xs text-gray-500 group-hover:text-gray-400 transition-colors">
-                        {item.description}
-                      </div>
-                    </div>
+                    
+                    <AnimatePresence>
+                      {!isCollapsed && (
+                        <motion.div 
+                          className="flex-1 relative z-10"
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <div className="font-medium text-sm">{item.label}</div>
+                          <div className="text-xs text-gray-500 group-hover:text-gray-400 transition-colors">
+                            {item.description}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                    
+                    {/* Active indicator */}
+                    {isActive && (
+                      <motion.div
+                        className="absolute right-0 top-0 bottom-0 w-1 bg-gradient-to-b from-accent-blue to-accent-green"
+                        initial={{ scaleY: 0 }}
+                        animate={{ scaleY: 1 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    )}
                   </motion.div>
                 </Link>
               </motion.div>
@@ -238,18 +297,11 @@ const Sidebar: React.FC = () => {
 
         {/* AI Features Section */}
         <motion.div 
-          className="px-4 py-2"
+          className="px-4 py-2 border-t border-white/5 mt-2"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
         >
-          <motion.div 
-            className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3"
-            animate={{ opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 4, repeat: Infinity }}
-          >
-            AI Features
-          </motion.div>
           <div className="space-y-1">
             {aiFeatures.map((feature, index) => {
               const Icon = feature.icon;
@@ -263,41 +315,65 @@ const Sidebar: React.FC = () => {
                 >
                   <Link to={feature.path || '#'}>
                     <motion.div
-                      className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors cursor-pointer group ${
-                        isActive ? 'bg-purple-500/20 text-purple-300' : 'hover:bg-gray-800'
+                      className={`relative flex items-center ${isCollapsed ? 'justify-center px-3' : 'space-x-3 px-3'} py-2.5 rounded-lg cursor-pointer group overflow-hidden ${
+                        isActive ? 'bg-accent-purple/20 text-accent-purple border border-accent-purple/30' : 'hover:bg-white/5'
                       }`}
-                      whileHover={{ scale: 1.02, x: 3 }}
+                      whileHover={{ 
+                        scale: 1.02,
+                        backgroundColor: "rgba(139, 92, 246, 0.1)"
+                      }}
                       whileTap={{ scale: 0.98 }}
                       onClick={feature.action}
+                      transition={{ duration: 0.2 }}
                     >
                       <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-accent-purple/5 to-accent-blue/5 opacity-0 group-hover:opacity-100"
+                        initial={{ x: '-100%' }}
+                        whileHover={{ x: 0 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                      
+                      <motion.div
+                        className="relative z-10"
                         animate={feature.loading ? { rotate: 360 } : {}}
                         transition={{ duration: 1, repeat: feature.loading ? Infinity : 0, ease: "linear" }}
+                        whileHover={{ scale: 1.1 }}
                       >
-                        <Icon className={`w-4 h-4 text-purple-400 group-hover:text-purple-300 transition-colors`} />
+                        <Icon className={`w-4 h-4 text-accent-purple group-hover:text-accent-blue transition-colors duration-200`} />
                       </motion.div>
-                      <div className="flex-1 text-left">
-                        <div className="text-sm font-medium text-gray-200 group-hover:text-white transition-colors">
-                          {feature.loading ? 'Scanning...' : feature.label}
-                        </div>
-                        {feature.badge && (
+                      
+                      <AnimatePresence>
+                        {!isCollapsed && (
                           <motion.div 
-                            className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium mt-1 ${feature.badgeColor} text-white`}
-                            animate={{ 
-                              scale: [1, 1.05, 1],
-                              opacity: [0.8, 1, 0.8]
-                            }}
-                            transition={{ duration: 2, repeat: Infinity }}
+                            className="flex-1 text-left relative z-10"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -20 }}
+                            transition={{ duration: 0.2 }}
                           >
-                            {feature.badge}
+                            <div className="text-sm font-medium text-gray-200 group-hover:text-white transition-colors">
+                              {feature.loading ? 'Scanning...' : feature.label}
+                            </div>
+                            {feature.badge && (
+                              <motion.div 
+                                className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium mt-1 ${feature.badgeColor} text-white backdrop-blur-sm`}
+                                animate={{ 
+                                  scale: [1, 1.05, 1],
+                                  opacity: [0.8, 1, 0.8]
+                                }}
+                                transition={{ duration: 2, repeat: Infinity }}
+                              >
+                                {feature.badge}
+                              </motion.div>
+                            )}
+                            {feature.description && (
+                              <div className="text-xs text-gray-500 group-hover:text-gray-400 transition-colors">
+                                {feature.description}
+                              </div>
+                            )}
                           </motion.div>
                         )}
-                        {feature.description && (
-                          <div className="text-xs text-gray-500 group-hover:text-gray-400 transition-colors">
-                            {feature.description}
-                          </div>
-                        )}
-                      </div>
+                      </AnimatePresence>
                     </motion.div>
                   </Link>
                 </motion.div>
@@ -308,18 +384,11 @@ const Sidebar: React.FC = () => {
 
         {/* Power Features Section */}
         <motion.div 
-          className="px-4 py-2"
+          className="px-4 py-2 border-t border-white/5 mt-2"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2 }}
         >
-          <motion.div 
-            className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3"
-            animate={{ opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 4, repeat: Infinity, delay: 2 }}
-          >
-            Power Features
-          </motion.div>
           <div className="space-y-1">
             {powerFeatures.map((feature, index) => {
               const isActive = location.pathname === feature.path;
@@ -332,14 +401,25 @@ const Sidebar: React.FC = () => {
                 >
                   <Link to={feature.path || '#'}>
                     <motion.div
-                      className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors cursor-pointer group ${
-                        isActive ? 'bg-orange-500/20 text-orange-300' : 'hover:bg-gray-800'
+                      className={`relative flex items-center ${isCollapsed ? 'justify-center px-3' : 'space-x-3 px-3'} py-2.5 rounded-lg cursor-pointer group overflow-hidden ${
+                        isActive ? 'bg-accent-orange/20 text-accent-orange border border-accent-orange/30' : 'hover:bg-white/5'
                       }`}
-                      whileHover={{ scale: 1.02, x: 3 }}
+                      whileHover={{ 
+                        scale: 1.02,
+                        backgroundColor: "rgba(249, 115, 22, 0.1)"
+                      }}
                       whileTap={{ scale: 0.98 }}
+                      transition={{ duration: 0.2 }}
                     >
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-accent-orange/5 to-accent-red/5 opacity-0 group-hover:opacity-100"
+                        initial={{ x: '-100%' }}
+                        whileHover={{ x: 0 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                      
                       <motion.div 
-                        className="w-4 h-4 bg-orange-500 rounded-sm"
+                        className="w-4 h-4 bg-accent-orange rounded-sm relative z-10"
                         whileHover={{ rotate: 45, scale: 1.1 }}
                         transition={{ duration: 0.2 }}
                         animate={{
@@ -351,14 +431,25 @@ const Sidebar: React.FC = () => {
                         }}
                         style={{ transition: "box-shadow 2s infinite" }}
                       />
-                      <div className="flex-1">
-                        <div className="text-sm font-medium text-gray-200 group-hover:text-white transition-colors">
-                          {feature.label}
-                        </div>
-                        <div className="text-xs text-gray-500 group-hover:text-gray-400 transition-colors">
-                          {feature.description}
-                        </div>
-                      </div>
+                      
+                      <AnimatePresence>
+                        {!isCollapsed && (
+                          <motion.div 
+                            className="flex-1 relative z-10"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -20 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <div className="text-sm font-medium text-gray-200 group-hover:text-white transition-colors">
+                              {feature.label}
+                            </div>
+                            <div className="text-xs text-gray-500 group-hover:text-gray-400 transition-colors">
+                              {feature.description}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </motion.div>
                   </Link>
                 </motion.div>
@@ -370,24 +461,76 @@ const Sidebar: React.FC = () => {
 
       {/* Footer */}
       <motion.div 
-        className="p-4 border-t border-gray-800 relative z-10"
+        className="p-4 border-t border-white/10 relative z-10"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 1.5 }}
       >
         <Link to="/settings">
           <motion.div
-            className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer group"
-            whileHover={{ scale: 1.02 }}
+            className={`relative flex items-center ${isCollapsed ? 'justify-center px-3' : 'space-x-3 px-3'} py-2.5 rounded-lg cursor-pointer group overflow-hidden ${
+              location.pathname === '/settings' 
+                ? 'bg-gradient-to-r from-accent-blue/20 to-accent-green/20 text-white border border-accent-blue/30' 
+                : 'hover:bg-white/5'
+            }`}
+            whileHover={{ 
+              scale: 1.02,
+              backgroundColor: "rgba(0, 191, 255, 0.1)"
+            }}
             whileTap={{ scale: 0.98 }}
+            transition={{ duration: 0.2 }}
           >
-            <Settings className="w-5 h-5 text-gray-400 group-hover:text-green-400 transition-colors" />
-            <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">
-              Settings
-            </span>
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-accent-blue/10 to-accent-green/10 opacity-0 group-hover:opacity-100"
+              initial={{ x: '-100%' }}
+              whileHover={{ x: 0 }}
+              transition={{ duration: 0.3 }}
+            />
+            
+            <Settings className="w-5 h-5 text-gray-400 group-hover:text-accent-blue transition-colors duration-200 relative z-10" />
+            
+            <AnimatePresence>
+              {!isCollapsed && (
+                <motion.span 
+                  className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors relative z-10"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  Settings
+                </motion.span>
+              )}
+            </AnimatePresence>
           </motion.div>
         </Link>
       </motion.div>
+
+      {/* Floating Expand Button when collapsed */}
+      <AnimatePresence>
+        {isCollapsed && (
+          <motion.button
+            className="absolute -right-4 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-gradient-to-r from-accent-blue to-accent-green rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow z-50"
+            onClick={() => setIsCollapsed(false)}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ 
+              opacity: 1, 
+              scale: 1,
+              boxShadow: [
+                "0 4px 15px rgba(0, 191, 255, 0.3)",
+                "0 6px 20px rgba(0, 191, 255, 0.5)",
+                "0 4px 15px rgba(0, 191, 255, 0.3)"
+              ]
+            }}
+            exit={{ opacity: 0, scale: 0 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <ChevronRight className="w-4 h-4 text-white" />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };

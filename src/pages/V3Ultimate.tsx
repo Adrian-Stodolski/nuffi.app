@@ -18,28 +18,24 @@ const V3Ultimate: React.FC = () => {
     <div className="min-h-screen relative overflow-hidden" style={{ fontFamily: 'Inter, sans-serif' }}>
       {/* AI-Enhanced Background */}
       <div className="absolute inset-0">
-        {[...Array(25)].map((_, i) => (
+        {[...Array(15)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full"
+            className="absolute w-1 h-1 rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-              width: Math.random() * 3 + 1,
-              height: Math.random() * 3 + 1,
-              background: i % 3 === 0 ? 'rgba(0, 191, 255, 0.3)' : 
-                         i % 3 === 1 ? 'rgba(76, 175, 80, 0.3)' : 
-                         'rgba(139, 92, 246, 0.3)'
+              background: i % 2 === 0 ? 'rgba(0, 191, 255, 0.4)' : 'rgba(76, 175, 80, 0.4)'
             }}
             animate={{
               opacity: [0, 1, 0],
-              scale: [0, 1.5, 0],
-              y: [0, -150, 0],
+              scale: [0, 2, 0],
+              y: [0, -100, 0],
             }}
             transition={{
-              duration: 6 + Math.random() * 3,
+              duration: 4 + Math.random() * 2,
               repeat: Infinity,
-              delay: Math.random() * 3,
+              delay: Math.random() * 2,
               ease: "easeInOut"
             }}
           />
@@ -328,7 +324,7 @@ const V3Ultimate: React.FC = () => {
                   <div className="h-1 loading-skeleton rounded w-2/3"></div>
                 </div>
               </motion.div>
-            </div>
+            </motion.div>
             
             {/* Divider */}
             <hr className="border-gray-800" />
@@ -458,7 +454,7 @@ const V3Ultimate: React.FC = () => {
                 </motion.button>
               </motion.div>
             </motion.div>
-          </div>
+          </motion.div>
           
           {/* Right Side - Power Mode */}
           <motion.div 

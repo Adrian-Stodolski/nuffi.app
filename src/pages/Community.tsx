@@ -1,5 +1,6 @@
 import React from 'react';
 import { Users, MessageCircle, Heart, Share, Star } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Community: React.FC = () => {
   const posts = [
@@ -59,94 +60,126 @@ const Community: React.FC = () => {
     }
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
-    <div className="h-full bg-gray-900 text-white overflow-auto">
+    <div className="h-full overflow-auto relative">
       <div className="p-6">
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-white mb-1">Community Hub</h1>
-          <p className="text-gray-400 text-sm">Connect with developers</p>
-        </div>
+        <motion.div 
+          className="mb-6"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 className="text-2xl font-bold text-gradient-ai mb-1">Community Hub</h1>
+          <p className="text-text-secondary text-sm">Connect with developers worldwide</p>
+        </motion.div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.div className="glass-card hover-lift" variants={itemVariants}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-400 text-sm">Active Users</p>
-                <p className="text-2xl font-bold text-white">1,247</p>
+                <p className="text-text-muted text-sm">Active Users</p>
+                <p className="text-2xl font-bold text-text-primary">1,247</p>
               </div>
-              <Users className="w-8 h-8 text-blue-400" />
+              <Users className="w-8 h-8 text-accent-blue" />
             </div>
-          </div>
+          </motion.div>
           
-          <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+          <motion.div className="glass-card hover-lift" variants={itemVariants}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-400 text-sm">Templates Shared</p>
-                <p className="text-2xl font-bold text-white">342</p>
+                <p className="text-text-muted text-sm">Templates Shared</p>
+                <p className="text-2xl font-bold text-text-primary">342</p>
               </div>
-              <Share className="w-8 h-8 text-green-400" />
+              <Share className="w-8 h-8 text-accent-green" />
             </div>
-          </div>
+          </motion.div>
           
-          <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+          <motion.div className="glass-card hover-lift" variants={itemVariants}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-400 text-sm">Discussions</p>
-                <p className="text-2xl font-bold text-white">89</p>
+                <p className="text-text-muted text-sm">Discussions</p>
+                <p className="text-2xl font-bold text-text-primary">89</p>
               </div>
-              <MessageCircle className="w-8 h-8 text-purple-400" />
+              <MessageCircle className="w-8 h-8 text-accent-purple" />
             </div>
-          </div>
+          </motion.div>
           
-          <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+          <motion.div className="glass-card hover-lift" variants={itemVariants}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-400 text-sm">Total Likes</p>
-                <p className="text-2xl font-bold text-white">2,156</p>
+                <p className="text-text-muted text-sm">Total Likes</p>
+                <p className="text-2xl font-bold text-text-primary">2,156</p>
               </div>
-              <Heart className="w-8 h-8 text-red-400" />
+              <Heart className="w-8 h-8 text-accent-red" />
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Community Feed */}
-        <div className="space-y-6">
+        <motion.div 
+          className="space-y-6"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
           {posts.map((post) => (
-            <div
+            <motion.div
               key={post.id}
-              className="bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-gray-600 transition-colors"
+              className="glass-card hover-lift"
+              variants={itemVariants}
+              whileHover={{ scale: 1.01 }}
             >
               {/* Post Header */}
               <div className="flex items-start space-x-4 mb-4">
                 <div className="text-2xl">{post.author.avatar}</div>
                 <div className="flex-1">
                   <div className="flex items-center space-x-2 mb-1">
-                    <h3 className="font-semibold text-white">{post.author.name}</h3>
+                    <h3 className="font-semibold text-text-primary">{post.author.name}</h3>
                     <div className="flex items-center space-x-1">
-                      <Star className="w-3 h-3 text-yellow-400" />
-                      <span className="text-xs text-gray-400">{post.author.reputation}</span>
+                      <Star className="w-3 h-3 text-accent-orange" />
+                      <span className="text-xs text-text-muted">{post.author.reputation}</span>
                     </div>
-                    <span className="text-xs text-gray-500">•</span>
-                    <span className="text-xs text-gray-500">{post.createdAt}</span>
+                    <span className="text-xs text-text-muted">•</span>
+                    <span className="text-xs text-text-muted">{post.createdAt}</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <span className="text-lg">{getPostTypeIcon(post.type)}</span>
-                    <h2 className="text-lg font-semibold text-white">{post.title}</h2>
+                    <h2 className="text-lg font-semibold text-text-primary">{post.title}</h2>
                   </div>
                 </div>
               </div>
 
               {/* Post Content */}
-              <p className="text-gray-300 mb-4 leading-relaxed">{post.content}</p>
+              <p className="text-text-secondary mb-4 leading-relaxed">{post.content}</p>
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2 mb-4">
                 {post.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-2 py-1 bg-gray-700 text-gray-300 rounded text-xs"
+                    className="px-2 py-1 bg-accent-blue/10 text-accent-blue rounded border border-accent-blue/20 text-xs backdrop-blur-sm"
                   >
                     #{tag}
                   </span>
@@ -154,30 +187,51 @@ const Community: React.FC = () => {
               </div>
 
               {/* Post Actions */}
-              <div className="flex items-center space-x-6 text-gray-400">
-                <button className="flex items-center space-x-2 hover:text-red-400 transition-colors">
+              <div className="flex items-center space-x-6 text-text-muted">
+                <motion.button 
+                  className="flex items-center space-x-2 hover:text-accent-red transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   <Heart className="w-4 h-4" />
                   <span className="text-sm">{post.likes}</span>
-                </button>
-                <button className="flex items-center space-x-2 hover:text-blue-400 transition-colors">
+                </motion.button>
+                <motion.button 
+                  className="flex items-center space-x-2 hover:text-accent-blue transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   <MessageCircle className="w-4 h-4" />
                   <span className="text-sm">{post.comments}</span>
-                </button>
-                <button className="flex items-center space-x-2 hover:text-green-400 transition-colors">
+                </motion.button>
+                <motion.button 
+                  className="flex items-center space-x-2 hover:text-accent-green transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   <Share className="w-4 h-4" />
                   <span className="text-sm">Share</span>
-                </button>
+                </motion.button>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Load More */}
-        <div className="text-center mt-8">
-          <button className="bg-gray-800 hover:bg-gray-700 text-white px-6 py-3 rounded-lg border border-gray-700 transition-colors">
+        <motion.div 
+          className="text-center mt-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          <motion.button 
+            className="ai-button-secondary px-6 py-3"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
             Load More Posts
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       </div>
     </div>
   );

@@ -11,18 +11,26 @@ import SystemScanner from './pages/SystemScanner.tsx';
 import Settings from './pages/Settings';
 import V3Ultimate from './pages/V3Ultimate';
 import WowFactorDemo from './pages/WowFactorDemo';
+import PowerMode from './pages/PowerMode';
+import WorkflowDesigner from './pages/WorkflowDesigner';
+import PresetWizard from './pages/PresetWizard';
+import AIRecommendations from './pages/AIRecommendations';
+import AnimatedBackground from './components/AnimatedBackground';
 
 import './App.css';
 
 function App() {
   return (
     <Router>
-      <div className="flex h-screen bg-gray-900 text-white">
+      <div className="flex h-screen bg-gradient-to-br from-bg-primary via-bg-secondary to-bg-primary text-white relative overflow-hidden">
+        {/* Global V3Ultimate Background */}
+        <AnimatedBackground />
+        
         {/* Sidebar */}
         <Sidebar />
         
         {/* Main Content */}
-        <main className="flex-1 overflow-hidden">
+        <main className="flex-1 overflow-hidden relative z-10">
           <Routes>
             <Route path="/" element={<WorkspaceHub />} />
             <Route path="/create" element={<CreateWorkspace />} />
@@ -33,11 +41,10 @@ function App() {
             <Route path="/settings" element={<Settings />} />
             <Route path="/v3-ultimate" element={<V3Ultimate />} />
             <Route path="/wow-factor" element={<WowFactorDemo />} />
-            {/* Placeholder routes for AI features */}
-            <Route path="/ai-recommendations" element={<div className="p-6 bg-gray-900 text-white h-full"><h1>AI Recommendations - Coming Soon</h1></div>} />
-            <Route path="/preset-wizard" element={<div className="p-6 bg-gray-900 text-white h-full"><h1>Preset Wizard - Coming Soon</h1></div>} />
-            <Route path="/power-mode" element={<div className="p-6 bg-gray-900 text-white h-full"><h1>Power Mode - Coming Soon</h1></div>} />
-            <Route path="/workflow-designer" element={<div className="p-6 bg-gray-900 text-white h-full"><h1>Workflow Designer - Coming Soon</h1></div>} />
+            <Route path="/ai-recommendations" element={<AIRecommendations />} />
+            <Route path="/preset-wizard" element={<PresetWizard />} />
+            <Route path="/power-mode" element={<PowerMode />} />
+            <Route path="/workflow-designer" element={<WorkflowDesigner />} />
           </Routes>
         </main>
       </div>

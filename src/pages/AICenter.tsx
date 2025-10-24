@@ -1,5 +1,6 @@
 import React from 'react';
 import { Brain, Lightbulb, TrendingUp, Zap } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const AICenter: React.FC = () => {
   const recommendations = [
@@ -38,116 +39,189 @@ const AICenter: React.FC = () => {
     }
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
-    <div className="h-full bg-gray-900 text-white overflow-auto">
+    <div className="h-full overflow-auto relative">
       <div className="p-6">
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-white mb-1">AI Command Center</h1>
-          <p className="text-gray-400 text-sm">AI recommendations</p>
-        </div>
+        <motion.div 
+          className="mb-6"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 className="text-2xl font-bold text-gradient-ai mb-1">AI Command Center</h1>
+          <p className="text-text-secondary text-sm">Intelligent recommendations and automation</p>
+        </motion.div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.div className="glass-card hover-lift" variants={itemVariants}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-400 text-sm">Active Scans</p>
-                <p className="text-2xl font-bold text-white">3</p>
+                <p className="text-text-muted text-sm">Active Scans</p>
+                <p className="text-2xl font-bold text-text-primary">3</p>
               </div>
-              <Brain className="w-8 h-8 text-purple-400" />
+              <Brain className="w-8 h-8 text-accent-purple" />
             </div>
-          </div>
+          </motion.div>
           
-          <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+          <motion.div className="glass-card hover-lift" variants={itemVariants}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-400 text-sm">Recommendations</p>
-                <p className="text-2xl font-bold text-white">{recommendations.length}</p>
+                <p className="text-text-muted text-sm">Recommendations</p>
+                <p className="text-2xl font-bold text-text-primary">{recommendations.length}</p>
               </div>
-              <Lightbulb className="w-8 h-8 text-yellow-400" />
+              <Lightbulb className="w-8 h-8 text-accent-orange" />
             </div>
-          </div>
+          </motion.div>
           
-          <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+          <motion.div className="glass-card hover-lift" variants={itemVariants}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-400 text-sm">Optimizations</p>
-                <p className="text-2xl font-bold text-white">12</p>
+                <p className="text-text-muted text-sm">Optimizations</p>
+                <p className="text-2xl font-bold text-text-primary">12</p>
               </div>
-              <TrendingUp className="w-8 h-8 text-green-400" />
+              <TrendingUp className="w-8 h-8 text-accent-green" />
             </div>
-          </div>
+          </motion.div>
           
-          <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+          <motion.div className="glass-card hover-lift" variants={itemVariants}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-400 text-sm">Time Saved</p>
-                <p className="text-2xl font-bold text-white">4.2h</p>
+                <p className="text-text-muted text-sm">Time Saved</p>
+                <p className="text-2xl font-bold text-text-primary">4.2h</p>
               </div>
-              <Zap className="w-8 h-8 text-blue-400" />
+              <Zap className="w-8 h-8 text-accent-blue" />
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* AI Recommendations */}
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold text-white mb-4">AI Recommendations</h2>
-          <div className="space-y-4">
+        <motion.div 
+          className="mb-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          <h2 className="text-xl font-semibold text-text-primary mb-4">AI Recommendations</h2>
+          <motion.div 
+            className="space-y-4"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
             {recommendations.map((rec) => (
-              <div
+              <motion.div
                 key={rec.id}
-                className="bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-gray-600 transition-colors"
+                className="glass-card hover-lift"
+                variants={itemVariants}
+                whileHover={{ scale: 1.01 }}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
                     <div className="flex items-center space-x-3 mb-2">
-                      <h3 className="text-lg font-semibold text-white">{rec.title}</h3>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(rec.priority)}`}>
+                      <h3 className="text-lg font-semibold text-text-primary">{rec.title}</h3>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium backdrop-blur-sm border ${getPriorityColor(rec.priority)}`}>
                         {rec.priority}
                       </span>
                     </div>
-                    <p className="text-gray-400 mb-2">{rec.description}</p>
-                    <p className="text-green-400 text-sm">💡 Potential savings: {rec.savings}</p>
+                    <p className="text-text-secondary mb-2">{rec.description}</p>
+                    <p className="text-accent-green text-sm">💡 Potential savings: {rec.savings}</p>
                   </div>
                 </div>
                 
                 <div className="flex space-x-3">
-                  <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
+                  <motion.button 
+                    className="ai-button px-4 py-2"
+                    whileHover={{ 
+                      scale: 1.02,
+                      boxShadow: "0 8px 25px rgba(76, 175, 80, 0.4)"
+                    }}
+                    whileTap={{ scale: 0.98 }}
+                  >
                     Apply
-                  </button>
-                  <button className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                  </motion.button>
+                  <motion.button 
+                    className="ai-button-secondary px-4 py-2"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
                     Dismiss
-                  </button>
+                  </motion.button>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* AI Features */}
-        <div>
-          <h2 className="text-xl font-semibold text-white mb-4">AI Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-              <Brain className="w-12 h-12 text-purple-400 mb-4" />
-              <h3 className="text-lg font-semibold text-white mb-2">Smart Analysis</h3>
-              <p className="text-gray-400 mb-4">AI analyzes your development patterns and suggests optimizations.</p>
-              <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          <h2 className="text-xl font-semibold text-text-primary mb-4">AI Features</h2>
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.div className="glass-card hover-lift" variants={itemVariants}>
+              <Brain className="w-12 h-12 text-accent-purple mb-4" />
+              <h3 className="text-lg font-semibold text-text-primary mb-2">Smart Analysis</h3>
+              <p className="text-text-secondary mb-4">AI analyzes your development patterns and suggests optimizations.</p>
+              <motion.button 
+                className="ai-button px-4 py-2"
+                style={{ background: 'linear-gradient(135deg, #8B5CF6, #A855F7)' }}
+                whileHover={{ 
+                  scale: 1.02,
+                  boxShadow: "0 8px 25px rgba(139, 92, 246, 0.4)"
+                }}
+                whileTap={{ scale: 0.98 }}
+              >
                 Run Analysis
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
             
-            <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-              <Zap className="w-12 h-12 text-yellow-400 mb-4" />
-              <h3 className="text-lg font-semibold text-white mb-2">Auto Setup</h3>
-              <p className="text-gray-400 mb-4">Automatically configure workspaces based on your project type.</p>
-              <button className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg transition-colors">
+            <motion.div className="glass-card hover-lift" variants={itemVariants}>
+              <Zap className="w-12 h-12 text-accent-orange mb-4" />
+              <h3 className="text-lg font-semibold text-text-primary mb-2">Auto Setup</h3>
+              <p className="text-text-secondary mb-4">Automatically configure workspaces based on your project type.</p>
+              <motion.button 
+                className="ai-button px-4 py-2"
+                style={{ background: 'linear-gradient(135deg, #F59E0B, #F97316)' }}
+                whileHover={{ 
+                  scale: 1.02,
+                  boxShadow: "0 8px 25px rgba(245, 158, 11, 0.4)"
+                }}
+                whileTap={{ scale: 0.98 }}
+              >
                 Enable Auto Setup
-              </button>
-            </div>
-          </div>
-        </div>
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );
