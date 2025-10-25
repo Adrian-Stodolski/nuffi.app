@@ -243,10 +243,10 @@ body {
   padding: 0.5rem;
 }
 
-/* Glass Sidebar - bardziej przezroczysty */
+/* Glass Sidebar - prawdziwie przezroczysty */
 .glass-sidebar {
-  background: rgba(5, 5, 8, 0.6);
-  backdrop-filter: blur(12px);
+  background: rgba(5, 5, 8, 0.15);
+  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(12px);
   border-right: 1px solid rgba(255, 255, 255, 0.06);
   border-top-left-radius: 12px;

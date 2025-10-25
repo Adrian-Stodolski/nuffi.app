@@ -152,59 +152,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onMenuToggle, onSh
       animate={{ x: 0, opacity: 1, width: isCollapsed ? 80 : 256 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
     >
-      {/* Synchronized animated background matching main app background */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        style={{ zIndex: 1 }}
-        animate={{
-          background: [
-            "radial-gradient(circle at 15% 30%, rgba(0, 191, 255, 0.08) 0%, transparent 40%), radial-gradient(circle at 80% 80%, rgba(76, 175, 80, 0.06) 0%, transparent 50%)",
-            "radial-gradient(circle at 10% 70%, rgba(139, 92, 246, 0.08) 0%, transparent 40%), radial-gradient(circle at 20% 20%, rgba(0, 191, 255, 0.06) 0%, transparent 50%)",
-            "radial-gradient(circle at 20% 50%, rgba(76, 175, 80, 0.08) 0%, transparent 40%), radial-gradient(circle at 30% 70%, rgba(139, 92, 246, 0.06) 0%, transparent 50%)"
-          ]
-        }}
-        transition={{ 
-          duration: 20, 
-          repeat: Infinity, 
-          ease: "easeInOut",
-          repeatType: "reverse"
-        }}
-      />
-
-      {/* Sidebar-specific particles */}
-      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 2 }}>
-        {[...Array(6)].map((_, i) => {
-          const x = Math.random() * 100;
-          const y = Math.random() * 100;
-          return (
-            <motion.div
-              key={`sidebar-particle-${i}`}
-              className="absolute w-0.5 h-0.5 rounded-full"
-              style={{
-                left: `${x}%`,
-                top: `${y}%`,
-                background: i % 3 === 0 
-                  ? 'rgba(0, 191, 255, 0.4)' 
-                  : i % 3 === 1 
-                  ? 'rgba(76, 175, 80, 0.4)' 
-                  : 'rgba(139, 92, 246, 0.3)'
-              }}
-              animate={{
-                opacity: [0.2, 0.6, 0.2],
-                scale: [0.5, 1.2, 0.5],
-                y: [0, -40, 0],
-                x: [0, (Math.random() - 0.5) * 20, 0]
-              }}
-              transition={{
-                duration: 8 + Math.random() * 4,
-                repeat: Infinity,
-                delay: Math.random() * 4,
-                ease: "easeInOut"
-              }}
-            />
-          );
-        })}
-      </div>
+      {/* Sidebar is now truly transparent - no own animations, just glass effect */}
       {/* Synchronized with main AnimatedBackground - no separate background needed */}
 
       {/* Integrated TopBar - part of sidebar */}
