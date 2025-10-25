@@ -213,4 +213,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <div align="center">
   <p>Made with ❤️ by the NUFFI Team</p>
   <p>🚀 <strong>Building the future of development environments</strong> 🚀</p>
+  <p><em>Hook test - auto git workflow enabled</em></p>
 </div>
