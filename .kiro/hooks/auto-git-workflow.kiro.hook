@@ -1,0 +1,27 @@
+{
+  "enabled": true,
+  "name": "Auto Git Workflow",
+  "description": "Automatically stages, commits, and pushes changes when files are saved in the project",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "src/**/*",
+      "src-tauri/**/*",
+      "*.ts",
+      "*.tsx",
+      "*.js",
+      "*.jsx",
+      "*.rs",
+      "*.json",
+      "*.md",
+      "*.toml",
+      "*.html",
+      "*.css"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Files have been saved in the project. Please:\n\n1. Stage all changes using `git add .`\n2. Create a commit with a meaningful commit message that describes what was changed based on the modified files\n3. Ask for confirmation before pushing to GitHub\n4. If confirmed, push the changes to the current branch on GitHub remote origin using `git push origin HEAD`\n5. Show a summary of what was committed and pushed\n\nAlways ask for user confirmation before executing the git push command. Analyze the staged changes to create a descriptive commit message that summarizes the modifications made."
+  }
+}
