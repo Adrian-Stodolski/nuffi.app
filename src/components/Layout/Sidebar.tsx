@@ -22,12 +22,14 @@ import NuffiLogo from '../NuffiLogo';
 
 interface SidebarProps {
   collapsed?: boolean;
+  onMenuToggle?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
+const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onMenuToggle }) => {
   const location = useLocation();
   const { scanSystem, loading } = useAppStore();
-  const [isCollapsed, setIsCollapsed] = useState(collapsed);
+  // Use props directly instead of local state
+  const isCollapsed = collapsed;
 
   const handleSystemScan = async () => {
     try {
@@ -129,7 +131,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
 
   return (
     <motion.div 
-      className={`${isCollapsed ? 'w-20' : 'w-64'} flex-1 glass-sidebar flex flex-col relative overflow-hidden transition-all duration-300 ease-in-out`}
+      className={`${isCollapsed ? 'w-20' : 'w-64'} h-full glass-sidebar flex flex-col relative overflow-hidden transition-all duration-300 ease-in-out`}
       initial={{ x: -100, opacity: 0 }}
       animate={{ x: 0, opacity: 1, width: isCollapsed ? 80 : 256 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -147,7 +149,189 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
         transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
       />
 
-      {/* Header removed - now using integrated toggle */}
+      {/* Integrated TopBar - part of sidebar */}
+      <div className="h-16 border-b border-white/10 flex items-center justify-center px-4 relative z-50">
+        <AnimatePresence mode="wait">
+          {collapsed ? (
+            /* Collapsed State - Only Toggle Button (centered) */
+            <motion.div
+              key="collapsed"
+              className="flex items-center justify-center w-full"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.button
+                onClick={onMenuToggle}
+                className="relative p-3 rounded-xl bg-gradient-to-r from-bg-quaternary/30 to-bg-quaternary/10 border border-accent-purple/20 hover:border-accent-purple/50 transition-all duration-300 backdrop-blur-sm group overflow-hidden"
+                whileHover={{ 
+                  scale: 1.15,
+                  boxShadow: "0 10px 30px rgba(139, 92, 246, 0.3)"
+                }}
+                whileTap={{ scale: 0.9 }}
+                animate={{
+                  borderColor: [
+                    "rgba(139, 92, 246, 0.2)",
+                    "rgba(139, 92, 246, 0.6)",
+                    "rgba(139, 92, 246, 0.2)"
+                  ]
+                }}
+                transition={{ duration: 3, repeat: Infinity }}
+                title="Expand sidebar"
+              >
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-accent-purple/15 via-accent-blue/15 to-accent-green/15 opacity-0 group-hover:opacity-100"
+                  animate={{
+                    background: [
+                      "linear-gradient(45deg, rgba(139, 92, 246, 0.15), rgba(0, 191, 255, 0.15), rgba(76, 175, 80, 0.15))",
+                      "linear-gradient(45deg, rgba(76, 175, 80, 0.15), rgba(139, 92, 246, 0.15), rgba(0, 191, 255, 0.15))",
+                      "linear-gradient(45deg, rgba(0, 191, 255, 0.15), rgba(76, 175, 80, 0.15), rgba(139, 92, 246, 0.15))"
+                    ]
+                  }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+                
+                <motion.div
+                  className="relative z-10"
+                  animate={{ 
+                    rotate: 180,
+                    scale: [1, 1.2, 1]
+                  }}
+                  transition={{ 
+                    rotate: { duration: 0.3, ease: "easeInOut" },
+                    scale: { duration: 1.5, repeat: Infinity }
+                  }}
+                >
+                  <ChevronLeft className="w-5 h-5 text-accent-purple group-hover:text-white transition-colors duration-300" />
+                </motion.div>
+              </motion.button>
+            </motion.div>
+          ) : (
+            /* Expanded State - Avatar + Notifications + Toggle */
+            <motion.div
+              key="expanded"
+              className="flex items-center justify-between w-full"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              {/* User Profile & Notifications */}
+              <div className="flex items-center space-x-3">
+                {/* User Avatar & Info */}
+                <Link to="/v3-ultimate">
+                  <motion.div
+                    className="flex items-center space-x-2 p-1 rounded-lg hover:bg-bg-quaternary/20 transition-all duration-300 cursor-pointer"
+                    whileHover={{ 
+                      scale: 1.02, 
+                      y: -1
+                    }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <motion.div
+                      className="w-8 h-8 bg-gradient-to-br from-accent-blue to-accent-purple rounded-full flex items-center justify-center relative overflow-hidden"
+                      animate={{
+                        boxShadow: [
+                          "0 0 10px rgba(0, 191, 255, 0.3)",
+                          "0 0 15px rgba(0, 191, 255, 0.5)",
+                          "0 0 10px rgba(0, 191, 255, 0.3)"
+                        ]
+                      }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                    >
+                      <User className="w-4 h-4 text-white relative z-10" />
+                    </motion.div>
+                    <motion.div
+                      className="text-left"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className="text-xs font-semibold text-text-primary">Adrian</div>
+                      <div className="text-xs text-accent-blue font-medium">Developer</div>
+                    </motion.div>
+                  </motion.div>
+                </Link>
+
+                {/* Notifications */}
+                <motion.button
+                  className="relative p-2 rounded-lg hover:bg-bg-quaternary/20 transition-all duration-300"
+                  whileHover={{ 
+                    scale: 1.05
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2, delay: 0.1 }}
+                >
+                  <Bell className="w-4 h-4 text-accent-orange" />
+                  <motion.div
+                    className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-br from-accent-red to-accent-orange rounded-full flex items-center justify-center"
+                    animate={{
+                      scale: [1, 1.2, 1],
+                      boxShadow: [
+                        "0 0 3px rgba(239, 68, 68, 0.4)",
+                        "0 0 8px rgba(239, 68, 68, 0.6)",
+                        "0 0 3px rgba(239, 68, 68, 0.4)"
+                      ]
+                    }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
+                    <span className="text-xs font-bold text-white">3</span>
+                  </motion.div>
+                </motion.button>
+              </div>
+
+              {/* Menu Toggle Button */}
+              <motion.button
+                onClick={onMenuToggle}
+                className="relative p-2 rounded-xl bg-gradient-to-r from-bg-quaternary/30 to-bg-quaternary/10 border border-accent-purple/20 hover:border-accent-purple/50 transition-all duration-300 backdrop-blur-sm group overflow-hidden"
+                whileHover={{ 
+                  scale: 1.1,
+                  boxShadow: "0 10px 30px rgba(139, 92, 246, 0.2)"
+                }}
+                whileTap={{ scale: 0.95 }}
+                animate={{
+                  borderColor: [
+                    "rgba(139, 92, 246, 0.2)",
+                    "rgba(139, 92, 246, 0.5)",
+                    "rgba(139, 92, 246, 0.2)"
+                  ]
+                }}
+                transition={{ duration: 4, repeat: Infinity, delay: 2 }}
+                title="Collapse sidebar"
+              >
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-accent-purple/10 via-accent-blue/10 to-accent-green/10 opacity-0 group-hover:opacity-100"
+                  animate={{
+                    background: [
+                      "linear-gradient(45deg, rgba(139, 92, 246, 0.1), rgba(0, 191, 255, 0.1), rgba(76, 175, 80, 0.1))",
+                      "linear-gradient(45deg, rgba(76, 175, 80, 0.1), rgba(139, 92, 246, 0.1), rgba(0, 191, 255, 0.1))",
+                      "linear-gradient(45deg, rgba(0, 191, 255, 0.1), rgba(76, 175, 80, 0.1), rgba(139, 92, 246, 0.1))"
+                    ]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                />
+                
+                <motion.div
+                  className="relative z-10"
+                  animate={{ 
+                    rotate: 0,
+                    scale: [1, 1.1, 1]
+                  }}
+                  transition={{ 
+                    rotate: { duration: 0.3, ease: "easeInOut" },
+                    scale: { duration: 2, repeat: Infinity }
+                  }}
+                >
+                  <ChevronLeft className="w-4 h-4 text-accent-purple group-hover:text-white transition-colors duration-300" />
+                </motion.div>
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* Main Navigation */}
       <div className="flex-1 overflow-y-auto relative z-10">

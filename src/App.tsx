@@ -1,10 +1,8 @@
 
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
 import Sidebar from './components/Layout/Sidebar';
-import TopBar from './components/Layout/TopBar';
 import WorkspaceHub from './pages/WorkspaceHub';
 import CreateWorkspace from './pages/CreateWorkspace';
 import Marketplace from './pages/Marketplace';
@@ -35,45 +33,16 @@ function App() {
         {/* Global V3Ultimate Background */}
         <AnimatedBackground />
         
-        {/* Sidebar with integrated TopBar - Animated */}
-        <motion.div 
-          className="flex flex-col relative"
-          animate={{ 
-            width: sidebarCollapsed ? 80 : 256 
-          }}
-          transition={{ 
-            duration: 0.3, 
-            ease: "easeInOut" 
-          }}
-        >
-          {/* Top Bar - moved to sidebar area */}
-          <TopBar onMenuToggle={handleMenuToggle} collapsed={sidebarCollapsed} />
-          <Sidebar collapsed={sidebarCollapsed} />
-        </motion.div>
+        {/* Sidebar with integrated TopBar - as one unit */}
+        <Sidebar 
+          collapsed={sidebarCollapsed} 
+          onMenuToggle={handleMenuToggle}
+        />
         
-        {/* Main Content - Animated to fill remaining space */}
-        <motion.main 
-          className="flex-1 h-full overflow-hidden relative z-10"
-          animate={{ 
-            marginLeft: sidebarCollapsed ? '0px' : '0px'
-          }}
-          transition={{ 
-            duration: 0.3, 
-            ease: "easeInOut" 
-          }}
-        >
+        {/* Main Content - Static, just fills remaining space */}
+        <main className="flex-1 h-full overflow-hidden relative z-10">
           {/* Page Content */}
-          <motion.div 
-            className="h-full overflow-auto"
-            animate={{
-              paddingLeft: sidebarCollapsed ? '1rem' : '1.5rem',
-              paddingRight: sidebarCollapsed ? '1rem' : '1.5rem'
-            }}
-            transition={{ 
-              duration: 0.3, 
-              ease: "easeInOut" 
-            }}
-          >
+          <div className="h-full overflow-auto p-6">
             <Routes>
               <Route path="/" element={<WorkspaceHub />} />
               <Route path="/create" element={<CreateWorkspace />} />
@@ -89,8 +58,8 @@ function App() {
               <Route path="/power-mode" element={<PowerMode />} />
               <Route path="/workflow-designer" element={<WorkflowDesigner />} />
             </Routes>
-          </motion.div>
-        </motion.main>
+          </div>
+        </main>
       </div>
 
 
