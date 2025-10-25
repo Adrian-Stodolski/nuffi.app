@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ArrowLeft, Github, Wand2, Zap, Check } from 'lucide-react';
 import { useAppStore } from '../stores/appStore';
 import { WorkspaceType } from '../types';
@@ -115,7 +115,7 @@ const CreateWorkspace: React.FC = () => {
 
   if (!creationMethod) {
     return (
-      <div className="h-full bg-gray-900 overflow-auto">
+      <div className="h-full overflow-auto">
         <motion.div 
           className="max-w-6xl mx-auto p-6"
           variants={containerVariants}
@@ -129,7 +129,7 @@ const CreateWorkspace: React.FC = () => {
           >
             <Link to="/">
               <motion.div
-                className="mr-4 p-2 hover:bg-gray-800 rounded-xl transition-colors"
+                className="mr-4 p-2 hover:bg-white/10 rounded-xl transition-colors"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
@@ -170,18 +170,18 @@ const CreateWorkspace: React.FC = () => {
               return (
                 <motion.div
                   key={method.id}
+                  className="glass-card hover-lift cursor-pointer"
                   variants={itemVariants}
                   whileHover={{ 
-                    scale: 1.05,
-                    rotateY: 5,
-                    rotateX: 5
+                    scale: 1.02,
+                    rotateY: 2,
+                    rotateX: 2
                   }}
-                  whileTap={{ scale: 0.95 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => setCreationMethod(method.id as any)}
-                  className="group cursor-pointer"
                   style={{ transformStyle: 'preserve-3d' }}
                 >
-                  <div className="dev-card h-full">
+                  <div className="h-full">
                     <motion.div 
                       className={`w-16 h-16 bg-gradient-to-br ${method.gradient} rounded-2xl flex items-center justify-center mb-6 shadow-lg`}
                       animate={{ 
@@ -198,7 +198,7 @@ const CreateWorkspace: React.FC = () => {
                     </motion.div>
                     
                     <motion.h3 
-                      className="text-xl font-bold text-white mb-3 group-hover:text-green-400 transition-colors"
+                      className="text-xl font-bold text-text-primary mb-3 group-hover:text-accent-blue transition-colors"
                       animate={{ x: [0, 2, 0] }}
                       transition={{ duration: 3, repeat: Infinity, delay: index * 0.2 }}
                     >
@@ -206,7 +206,7 @@ const CreateWorkspace: React.FC = () => {
                     </motion.h3>
                     
                     <motion.p 
-                      className="text-gray-400 mb-6 leading-relaxed"
+                      className="text-text-secondary mb-6 leading-relaxed"
                       animate={{ opacity: [0.8, 1, 0.8] }}
                       transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
                     >

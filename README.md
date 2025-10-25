@@ -1,134 +1,216 @@
-# NUFFI - Developer Workspace Management Platform
+# 👻 NUFFI - AI Development Environment
 
-NUFFI to kompletna platforma do zarządzania środowiskami deweloperskimi, zbudowana z wykorzystaniem Tauri 2.8, React 18.3 i TypeScript.
+<div align="center">
+  <img src="https://img.shields.io/badge/React-18.2.0-61DAFB?style=for-the-badge&logo=react&logoColor=white" />
+  <img src="https://img.shields.io/badge/TypeScript-5.0.4-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/Tauri-1.5.0-FFC131?style=for-the-badge&logo=tauri&logoColor=white" />
+  <img src="https://img.shields.io/badge/Vite-4.5.14-646CFF?style=for-the-badge&logo=vite&logoColor=white" />
+  <img src="https://img.shields.io/badge/Framer_Motion-10.16.4-0055FF?style=for-the-badge&logo=framer&logoColor=white" />
+</div>
 
-## 🚀 Funkcje
+## ✨ Overview
 
-- **Zarządzanie workspace'ami**: Tworzenie, aktywacja i zarządzanie środowiskami deweloperskimi
-- **Skaner systemu**: Automatyczne wykrywanie zainstalowanych narzędzi deweloperskich
-- **Szablony workspace'ów**: Gotowe konfiguracje dla różnych typów projektów
-- **Aplikacja desktopowa**: Natywna aplikacja na macOS, Windows i Linux
-- **Interfejs webowy**: Dostęp przez przeglądarkę podczas developmentu
+**NUFFI** is a next-generation AI-powered development environment that revolutionizes how developers work. Built with modern web technologies and featuring a beautiful glassmorphism UI, NUFFI provides intelligent workspace management, real-time system monitoring, and AI-driven recommendations.
 
-## 🛠 Technologie
+## 🚀 Key Features
 
-- **Frontend**: React 18.3 + TypeScript + Tailwind CSS
-- **Backend**: Rust + Tauri 2.8
-- **Stan**: Zustand
-- **Routing**: React Router
-- **Ikony**: Lucide React
-- **Powiadomienia**: React Hot Toast
+### 🎯 **AI-Powered Workspace Management**
+- **Smart Workspace Creation** - Intelligent project setup with AI recommendations
+- **Template Marketplace** - Curated collection of development templates
+- **AI Recommendations** - Real-time suggestions for code optimization and best practices
+- **Preset Wizard** - Guided setup for popular development stacks
 
-## 📦 Instalacja
+### 📊 **Real-Time Dashboard & Monitoring**
+- **System Performance Monitor** - Live CPU, Memory, Disk, and Network metrics
+- **Project Health Tracking** - Code quality, test coverage, and security monitoring
+- **Development Tools Status** - Real-time status of Node.js, React, TypeScript, and more
+- **Activity Feed** - Recent deployments, tests, and development events
 
-### Wymagania
-- Node.js 18+
-- Rust 1.77+
-- Tauri CLI
+### 🎨 **Beautiful Modern UI**
+- **Glassmorphism Design** - Stunning glass-card effects with backdrop blur
+- **Smooth Animations** - 60fps animations powered by Framer Motion
+- **Responsive Layout** - Perfect experience on all screen sizes
+- **Dark Theme** - Eye-friendly dark interface with accent colors
 
-### Kroki instalacji
+### 🔧 **Developer Experience**
+- **Hot Module Replacement** - Instant updates during development
+- **TypeScript Support** - Full type safety and IntelliSense
+- **Component Library** - Reusable UI components with consistent styling
+- **State Management** - Efficient state handling with Zustand
 
-1. **Klonuj repozytorium**
+## 🛠️ Tech Stack
+
+### **Frontend**
+- **React 18.2.0** - Modern React with hooks and concurrent features
+- **TypeScript 5.0.4** - Type-safe development experience
+- **Vite 4.5.14** - Lightning-fast build tool and dev server
+- **Framer Motion 10.16.4** - Production-ready motion library
+- **Tailwind CSS** - Utility-first CSS framework
+- **Lucide React** - Beautiful SVG icons
+
+### **Desktop App**
+- **Tauri 1.5.0** - Rust-powered desktop application framework
+- **Rust** - Systems programming language for performance
+
+### **Development Tools**
+- **ESLint** - Code linting and quality assurance
+- **Prettier** - Code formatting
+- **PostCSS** - CSS processing and optimization
+
+## 🎮 Getting Started
+
+### Prerequisites
+- **Node.js** 18.17.0 or higher
+- **Rust** 1.77.1 or higher
+- **npm** or **yarn** package manager
+
+### Installation
+
+1. **Clone the repository**
    ```bash
-   git clone <repo-url>
+   git clone https://github.com/your-username/nuffi.git
    cd nuffi
    ```
 
-2. **Zainstaluj zależności**
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-3. **Uruchom w trybie deweloperskim**
-   
-   **Aplikacja webowa:**
+3. **Start development server**
    ```bash
    npm run dev
    ```
-   Otwórz http://localhost:1420
-   
-   **Aplikacja desktopowa:**
+
+4. **Launch Tauri app** (in separate terminal)
    ```bash
    cargo tauri dev
    ```
 
-4. **Zbuduj aplikację produkcyjną**
-   ```bash
-   cargo tauri build
+5. **Open in browser**
+   ```
+   http://localhost:1420
    ```
 
-## 🎯 Użytkowanie
-
-### Główne funkcje:
-
-1. **Workspace Hub** - Zarządzaj swoimi środowiskami deweloperskimi
-2. **Create Workspace** - Twórz nowe workspace'y z szablonów lub od zera
-3. **System Scanner** - Skanuj system w poszukiwaniu zainstalowanych narzędzi
-4. **Settings** - Konfiguruj preferencje aplikacji
-
-### Szybki start:
-
-1. Uruchom aplikację
-2. Przejdź do "System Scanner" i zeskanuj swój system
-3. Utwórz nowy workspace w "Create Workspace"
-4. Zarządzaj workspace'ami w "Workspace Hub"
-
-## 📁 Struktura projektu
+## 📱 Application Structure
 
 ```
-nuffi/
-├── src/                    # Frontend React
-│   ├── components/         # Komponenty React
-│   ├── pages/             # Strony aplikacji
-│   ├── services/          # Logika biznesowa
-│   ├── stores/            # Zarządzanie stanem (Zustand)
-│   ├── types/             # Definicje TypeScript
-│   └── utils/             # Funkcje pomocnicze
-├── src-tauri/             # Backend Rust
-│   ├── src/               # Kod Rust
-│   └── Cargo.toml         # Zależności Rust
-├── public/                # Pliki statyczne
-└── package.json           # Zależności Node.js
+src/
+├── components/           # Reusable UI components
+│   ├── Layout/          # Layout components (Sidebar, TopBar)
+│   ├── NuffiLogo.tsx    # Custom Nuffi ghost logo
+│   └── AnimatedBackground.tsx
+├── pages/               # Application pages
+│   ├── V3Ultimate.tsx   # Dashboard Overview
+│   ├── WowFactorDemo.tsx # Performance Monitor
+│   ├── AIRecommendations.tsx
+│   ├── Marketplace.tsx
+│   └── ...
+├── services/            # API and service layers
+├── stores/              # State management
+└── styles/              # Global styles and themes
 ```
 
-## 🔧 Rozwój
+## 🎨 Design System
 
-### Dodawanie nowych funkcji:
+### **Color Palette**
+- **Primary**: `#00BFFF` (Accent Blue)
+- **Secondary**: `#8B5CF6` (Accent Purple)
+- **Success**: `#4CAF50` (Accent Green)
+- **Warning**: `#F97316` (Accent Orange)
+- **Error**: `#EF4444` (Accent Red)
 
-1. **Nowe komponenty**: Dodaj w `src/components/`
-2. **Nowe strony**: Dodaj w `src/pages/` i zaktualizuj routing w `App.tsx`
-3. **Nowe serwisy**: Dodaj w `src/services/`
-4. **Nowe typy**: Dodaj w `src/types/index.ts`
+### **Typography**
+- **Font Family**: Inter, system-ui, sans-serif
+- **Headings**: Bold weights with gradient text effects
+- **Body**: Regular weight with proper line heights
 
-### Tauri commands:
+### **Components**
+- **Glass Cards**: Backdrop blur with subtle borders
+- **Hover Effects**: Smooth scale and lift animations
+- **Loading States**: Rotating icons and progress bars
+- **Gradients**: Multi-color gradients for visual appeal
 
-Dodaj nowe komendy Rust w `src-tauri/src/main.rs` i użyj ich w frontend przez `invoke()`.
+## 🚀 Features in Detail
 
-## 🐛 Rozwiązywanie problemów
+### **Dashboard Overview**
+- Real-time system metrics with animated progress bars
+- Project statistics with trend indicators
+- Recent activity feed with color-coded events
+- Circular health score with SVG animations
 
-### Częste problemy:
+### **Performance Monitor**
+- Live CPU usage with temperature monitoring
+- Memory usage with available/used breakdown
+- Disk I/O with read/write speeds
+- Network activity with latency tracking
+- Top system processes with resource usage
 
-1. **Błędy kompilacji Tauri**: Sprawdź czy masz zainstalowany Rust i Tauri CLI
-2. **Błędy TypeScript**: Sprawdź definicje typów w `src/types/`
-3. **Problemy z zależnościami**: Usuń `node_modules` i uruchom `npm install`
+### **AI Recommendations**
+- Intelligent code optimization suggestions
+- Security vulnerability detection
+- Performance improvement recommendations
+- Loading states with smooth animations
+- Apply/Dismiss functionality
 
-### Logi:
+### **Marketplace**
+- Template browsing with search and filters
+- One-click template application
+- Rating and download statistics
+- Responsive grid layout
 
-- **Frontend**: Konsola przeglądarki (F12)
-- **Tauri**: Terminal gdzie uruchomiłeś `cargo tauri dev`
+## 🔧 Development
 
-## 📝 Licencja
+### **Available Scripts**
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run tauri dev    # Start Tauri development
+npm run tauri build  # Build Tauri application
+```
 
-MIT License
+### **Code Style**
+- **ESLint** configuration for code quality
+- **Prettier** for consistent formatting
+- **TypeScript** strict mode enabled
+- **Component naming**: PascalCase for components
+- **File naming**: camelCase for utilities, PascalCase for components
 
-## 🤝 Wkład
+## 🎯 Roadmap
 
-1. Fork projektu
-2. Stwórz branch dla swojej funkcji (`git checkout -b feature/AmazingFeature`)
-3. Commit zmiany (`git commit -m 'Add some AmazingFeature'`)
-4. Push do branch (`git push origin feature/AmazingFeature`)
-5. Otwórz Pull Request
+- [ ] **AI Code Assistant** - Integrated AI coding help
+- [ ] **Plugin System** - Extensible architecture
+- [ ] **Cloud Sync** - Workspace synchronization
+- [ ] **Team Collaboration** - Multi-user workspaces
+- [ ] **Mobile App** - iOS and Android companion
+- [ ] **Docker Integration** - Container management
+- [ ] **Git Integration** - Advanced version control
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **Tauri Team** - For the amazing desktop app framework
+- **React Team** - For the incredible UI library
+- **Framer** - For the beautiful motion library
+- **Lucide** - For the gorgeous icon set
 
 ---
 
-**NUFFI v1.0.0** - Profesjonalna platforma zarządzania środowiskami deweloperskimi
+<div align="center">
+  <p>Made with ❤️ by the NUFFI Team</p>
+  <p>🚀 <strong>Building the future of development environments</strong> 🚀</p>
+</div>

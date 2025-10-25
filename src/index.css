@@ -64,15 +64,15 @@
 }
 
 body {
-  margin: 0;
-  background: var(--bg-primary);
+  margin: 0 !important;
+  background: var(--bg-primary) !important;
   background-image: 
     radial-gradient(circle at 20% 80%, rgba(0, 191, 255, 0.05) 0%, transparent 50%),
     radial-gradient(circle at 80% 20%, rgba(76, 175, 80, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(139, 92, 246, 0.03) 0%, transparent 50%);
-  color: var(--text-primary);
-  min-height: 100vh;
-  overflow: hidden;
+    radial-gradient(circle at 40% 40%, rgba(139, 92, 246, 0.03) 0%, transparent 50%) !important;
+  color: var(--text-primary) !important;
+  min-height: 100vh !important;
+  overflow: hidden !important;
 }
 
 #root {
@@ -81,28 +81,25 @@ body {
   background: transparent;
 }
 
-/* Enhanced Glassmorphism Scrollbar */
+/* Ultra Transparent Glassmorphism Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(17, 17, 24, 0.5);
-  backdrop-filter: blur(10px);
-  border-radius: 4px;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, var(--accent-ai), var(--accent-purple));
-  border-radius: 4px;
+  background: rgba(0, 191, 255, 0.2);
+  border-radius: 3px;
   transition: all 0.3s ease;
-  box-shadow: 0 0 10px var(--accent-ai-glow);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, var(--accent-ai-hover), var(--accent-purple));
-  box-shadow: 0 0 15px var(--accent-ai-glow);
+  background: rgba(0, 191, 255, 0.4);
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
 }
 
 /* Professional Animations for 2025 */

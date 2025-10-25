@@ -19,6 +19,8 @@ import {
 
 const AIRecommendations: React.FC = () => {
   const [filter, setFilter] = useState('all');
+  const [applyingRecommendation, setApplyingRecommendation] = useState<number | null>(null);
+  const [appliedRecommendations, setAppliedRecommendations] = useState<Set<number>>(new Set());
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -127,6 +129,20 @@ const AIRecommendations: React.FC = () => {
   const filteredRecommendations = filter === 'all' 
     ? recommendations 
     : recommendations.filter(r => r.priority === filter);
+
+  const handleApplyRecommendation = async (id: number) => {
+    setApplyingRecommendation(id);
+    
+    // Simulate applying recommendation
+    await new Promise(resolve => setTimeout(resolve, 2000 + Math.random() * 2000));
+    
+    setAppliedRecommendations(prev => new Set([...prev, id]));
+    setApplyingRecommendation(null);
+  };
+
+  const handleDismissRecommendation = (id: number) => {
+    setAppliedRecommendations(prev => new Set([...prev, id]));
+  };
 
   return (
     <div className="h-full overflow-auto relative">
@@ -275,23 +291,49 @@ const AIRecommendations: React.FC = () => {
                       
                       <div className="flex items-center space-x-2">
                         <motion.button
-                          className="p-2 rounded-lg bg-accent-red/20 text-accent-red hover:bg-accent-red/30 transition-colors"
+                          onClick={() => handleDismissRecommendation(rec.id)}
+                          disabled={appliedRecommendations.has(rec.id)}
+                          className="p-2 rounded-lg bg-accent-red/20 text-accent-red hover:bg-accent-red/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                         >
                           <X className="w-4 h-4" />
                         </motion.button>
-                        <motion.button
-                          className="ai-button px-4 py-2 flex items-center space-x-2"
-                          whileHover={{ 
-                            scale: 1.02,
-                            boxShadow: "0 8px 25px rgba(76, 175, 80, 0.4)"
-                          }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          <CheckCircle className="w-4 h-4" />
-                          <span>Apply</span>
-                        </motion.button>
+                        
+                        {appliedRecommendations.has(rec.id) ? (
+                          <div className="ai-button px-4 py-2 flex items-center space-x-2 bg-accent-green/20 text-accent-green cursor-default">
+                            <CheckCircle className="w-4 h-4" />
+                            <span>Applied</span>
+                          </div>
+                        ) : (
+                          <motion.button
+                            onClick={() => handleApplyRecommendation(rec.id)}
+                            disabled={applyingRecommendation === rec.id}
+                            className="ai-button px-4 py-2 flex items-center space-x-2 disabled:opacity-50"
+                            whileHover={{ 
+                              scale: 1.02,
+                              boxShadow: "0 8px 25px rgba(76, 175, 80, 0.4)"
+                            }}
+                            whileTap={{ scale: 0.98 }}
+                          >
+                            {applyingRecommendation === rec.id ? (
+                              <>
+                                <motion.div
+                                  animate={{ rotate: 360 }}
+                                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                >
+                                  <CheckCircle className="w-4 h-4" />
+                                </motion.div>
+                                <span>Applying...</span>
+                              </>
+                            ) : (
+                              <>
+                                <CheckCircle className="w-4 h-4" />
+                                <span>Apply</span>
+                              </>
+                            )}
+                          </motion.button>
+                        )}
                       </div>
                     </div>
                   </div>

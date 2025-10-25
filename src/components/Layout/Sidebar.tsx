@@ -12,15 +12,22 @@ import {
   Wand2,
   Search,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  User,
+  Bell
 } from 'lucide-react';
 import { useAppStore } from '../../stores/appStore';
 import toast from 'react-hot-toast';
+import NuffiLogo from '../NuffiLogo';
 
-const Sidebar: React.FC = () => {
+interface SidebarProps {
+  collapsed?: boolean;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
   const location = useLocation();
   const { scanSystem, loading } = useAppStore();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(collapsed);
 
   const handleSystemScan = async () => {
     try {
@@ -70,16 +77,16 @@ const Sidebar: React.FC = () => {
     {
       id: 'v3-ultimate',
       path: '/v3-ultimate',
-      label: '🧪 V3 Ultimate Test',
+      label: 'Dashboard Overview',
       icon: Zap,
-      description: 'Test dashboard design'
+      description: 'System overview and metrics'
     },
     {
       id: 'wow-factor',
       path: '/wow-factor',
-      label: '✨ Wow Factor Demo',
+      label: 'Performance Monitor',
       icon: Wand2,
-      description: '2025 AI design trends'
+      description: 'Real-time system monitoring'
     }
   ];
 
@@ -122,7 +129,7 @@ const Sidebar: React.FC = () => {
 
   return (
     <motion.div 
-      className={`${isCollapsed ? 'w-20' : 'w-64'} h-full glass-sidebar flex flex-col relative overflow-hidden transition-all duration-300 ease-in-out`}
+      className={`${isCollapsed ? 'w-20' : 'w-64'} flex-1 glass-sidebar flex flex-col relative overflow-hidden transition-all duration-300 ease-in-out`}
       initial={{ x: -100, opacity: 0 }}
       animate={{ x: 0, opacity: 1, width: isCollapsed ? 80 : 256 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -140,74 +147,7 @@ const Sidebar: React.FC = () => {
         transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
       />
 
-      {/* Header with Glassmorphism */}
-      <motion.div 
-        className="p-4 border-b border-white/10 relative z-10"
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.2 }}
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <motion.div 
-              className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg ai-glow"
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              whileTap={{ scale: 0.9 }}
-              animate={{ 
-                boxShadow: [
-                  "0 0 15px rgba(0, 191, 255, 0.4)",
-                  "0 0 25px rgba(0, 191, 255, 0.6)",
-                  "0 0 15px rgba(0, 191, 255, 0.4)"
-                ]
-              }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <span className="text-white font-bold text-lg">N</span>
-            </motion.div>
-            <AnimatePresence>
-              {!isCollapsed && (
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <motion.h1 
-                    className="font-bold text-xl text-gradient-ai"
-                    animate={{ opacity: [0.8, 1, 0.8] }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                  >
-                    NUFFI
-                  </motion.h1>
-                  <motion.p 
-                    className="text-xs text-gray-400"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.5 }}
-                  >
-                    AI Dev Environment
-                  </motion.p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-          
-          {/* Collapse Toggle Button */}
-          <motion.button
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="p-2 rounded-lg hover:bg-white/10 transition-colors"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <motion.div
-              animate={{ rotate: isCollapsed ? 180 : 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <ChevronLeft className="w-4 h-4 text-gray-400" />
-            </motion.div>
-          </motion.button>
-        </div>
-      </motion.div>
+      {/* Header removed - now using integrated toggle */}
 
       {/* Main Navigation */}
       <div className="flex-1 overflow-y-auto relative z-10">
@@ -294,6 +234,8 @@ const Sidebar: React.FC = () => {
             );
           })}
         </motion.div>
+
+        {/* Removed - Avatar/Notifications moved to TopBar */}
 
         {/* AI Features Section */}
         <motion.div 
@@ -459,13 +401,48 @@ const Sidebar: React.FC = () => {
         </motion.div>
       </div>
 
-      {/* Footer */}
+      {/* Footer with Logo */}
       <motion.div 
-        className="p-4 border-t border-white/10 relative z-10"
+        className="p-4 border-t border-white/10 relative z-10 space-y-3"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 1.5 }}
       >
+        {/* Nuffi Logo */}
+        <motion.div 
+          className="flex items-center justify-center space-x-3 mb-3"
+          whileHover={{ scale: 1.02 }}
+        >
+          <NuffiLogo size={40} animate={true} />
+          <AnimatePresence>
+            {!isCollapsed && (
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.2 }}
+              >
+                <motion.h1 
+                  className="font-bold text-xl text-gradient-ai"
+                  animate={{ opacity: [0.8, 1, 0.8] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                >
+                  NUFFI
+                </motion.h1>
+                <motion.p 
+                  className="text-xs text-gray-400 text-center"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                >
+                  AI Dev Environment
+                </motion.p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* Settings */}
         <Link to="/settings">
           <motion.div
             className={`relative flex items-center ${isCollapsed ? 'justify-center px-3' : 'space-x-3 px-3'} py-2.5 rounded-lg cursor-pointer group overflow-hidden ${
@@ -506,31 +483,7 @@ const Sidebar: React.FC = () => {
         </Link>
       </motion.div>
 
-      {/* Floating Expand Button when collapsed */}
-      <AnimatePresence>
-        {isCollapsed && (
-          <motion.button
-            className="absolute -right-4 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-gradient-to-r from-accent-blue to-accent-green rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow z-50"
-            onClick={() => setIsCollapsed(false)}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ 
-              opacity: 1, 
-              scale: 1,
-              boxShadow: [
-                "0 4px 15px rgba(0, 191, 255, 0.3)",
-                "0 6px 20px rgba(0, 191, 255, 0.5)",
-                "0 4px 15px rgba(0, 191, 255, 0.3)"
-              ]
-            }}
-            exit={{ opacity: 0, scale: 0 }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <ChevronRight className="w-4 h-4 text-white" />
-          </motion.button>
-        )}
-      </AnimatePresence>
+      {/* Old floating button removed - now using TopBar toggle */}
     </motion.div>
   );
 };

@@ -17,6 +17,9 @@ import {
 const PowerMode: React.FC = () => {
   const [powerLevel, setPowerLevel] = useState(75);
   const [isOverclocked, setIsOverclocked] = useState(false);
+  const [isOptimizing, setIsOptimizing] = useState(false);
+  const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
+  const [showPowerProfile, setShowPowerProfile] = useState(false);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -260,18 +263,33 @@ const PowerMode: React.FC = () => {
             <div className="flex flex-wrap gap-4">
               <motion.button
                 className="ai-button flex items-center space-x-2"
+                onClick={() => {
+                  setIsOptimizing(true);
+                  setTimeout(() => setIsOptimizing(false), 3000);
+                }}
+                disabled={isOptimizing}
                 whileHover={{ 
                   scale: 1.02,
                   boxShadow: "0 8px 25px rgba(76, 175, 80, 0.4)"
                 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <TrendingUp className="w-4 h-4" />
-                <span>Optimize System</span>
+                {isOptimizing ? (
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                  >
+                    <TrendingUp className="w-4 h-4" />
+                  </motion.div>
+                ) : (
+                  <TrendingUp className="w-4 h-4" />
+                )}
+                <span>{isOptimizing ? 'Optimizing...' : 'Optimize System'}</span>
               </motion.button>
               
               <motion.button
                 className="ai-button-secondary flex items-center space-x-2"
+                onClick={() => setShowAdvancedSettings(!showAdvancedSettings)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -281,6 +299,7 @@ const PowerMode: React.FC = () => {
               
               <motion.button
                 className="ai-button-secondary flex items-center space-x-2"
+                onClick={() => setShowPowerProfile(!showPowerProfile)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -289,6 +308,91 @@ const PowerMode: React.FC = () => {
               </motion.button>
             </div>
           </motion.div>
+
+          {/* Advanced Settings Panel */}
+          {showAdvancedSettings && (
+            <motion.div
+              className="glass-card mt-6"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              variants={itemVariants}
+            >
+              <h3 className="text-lg font-semibold text-text-primary mb-4">Advanced Settings</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-text-primary mb-2">CPU Governor</label>
+                  <select className="glass-select w-full">
+                    <option>Performance</option>
+                    <option>Powersave</option>
+                    <option>Ondemand</option>
+                    <option>Conservative</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-text-primary mb-2">Memory Management</label>
+                  <select className="glass-select w-full">
+                    <option>Aggressive</option>
+                    <option>Balanced</option>
+                    <option>Conservative</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-text-primary mb-2">Thermal Throttling</label>
+                  <select className="glass-select w-full">
+                    <option>85°C</option>
+                    <option>90°C</option>
+                    <option>95°C</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-text-primary mb-2">Fan Curve</label>
+                  <select className="glass-select w-full">
+                    <option>Silent</option>
+                    <option>Balanced</option>
+                    <option>Performance</option>
+                    <option>Custom</option>
+                  </select>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Power Profile Panel */}
+          {showPowerProfile && (
+            <motion.div
+              className="glass-card mt-6"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              variants={itemVariants}
+            >
+              <h3 className="text-lg font-semibold text-text-primary mb-4">Power Profiles</h3>
+              <div className="space-y-3">
+                {[
+                  { name: 'Eco Mode', description: 'Maximum battery life, reduced performance', icon: '🌱' },
+                  { name: 'Balanced', description: 'Good balance between performance and efficiency', icon: '⚖️' },
+                  { name: 'Performance', description: 'Maximum performance, higher power consumption', icon: '🚀' },
+                  { name: 'Gaming', description: 'Optimized for gaming and intensive tasks', icon: '🎮' }
+                ].map((profile, index) => (
+                  <motion.div
+                    key={index}
+                    className="p-3 rounded-lg bg-bg-quaternary/30 hover:bg-bg-quaternary/50 cursor-pointer transition-colors"
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <span className="text-2xl">{profile.icon}</span>
+                      <div>
+                        <h4 className="font-medium text-text-primary">{profile.name}</h4>
+                        <p className="text-sm text-text-secondary">{profile.description}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
         </motion.div>
       </div>
     </div>

@@ -1,166 +1,141 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { 
-  Zap, 
-  Brain, 
-  Code, 
-  Settings, 
-  Search, 
-  Play, 
-  Pause,
-  RotateCcw,
-  Sparkles,
-  Cpu,
-  Database,
-  Globe,
-  Shield,
-  Rocket
+  Activity, 
+  Cpu, 
+  HardDrive, 
+  Wifi, 
+  Server,
+  Monitor,
+  Zap,
+  TrendingUp,
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  BarChart3
 } from 'lucide-react';
 
 const WowFactorDemo: React.FC = () => {
-  const [autonomyLevel, setAutonomyLevel] = useState(75);
-  const [selectedModel, setSelectedModel] = useState('Claude');
-  const [isScanning, setIsScanning] = useState(false);
-  const [scanProgress, setScanProgress] = useState(0);
+  const [realTimeMetrics, setRealTimeMetrics] = useState({
+    cpu: { usage: 45, temp: 62, cores: 8 },
+    memory: { used: 68, total: 16, available: 5.1 },
+    disk: { usage: 32, read: 125, write: 89 },
+    network: { download: 12.5, upload: 3.2, latency: 28 }
+  });
 
-  const startScan = () => {
-    setIsScanning(true);
-    setScanProgress(0);
-    
+  const [systemHealth, setSystemHealth] = useState({
+    overall: 85,
+    processes: 142,
+    uptime: '2d 14h 32m',
+    alerts: 2
+  });
+
+  // Simulate real-time updates
+  useEffect(() => {
     const interval = setInterval(() => {
-      setScanProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setIsScanning(false);
-          return 100;
+      setRealTimeMetrics(prev => ({
+        cpu: {
+          ...prev.cpu,
+          usage: Math.max(10, Math.min(90, prev.cpu.usage + (Math.random() - 0.5) * 10)),
+          temp: Math.max(40, Math.min(80, prev.cpu.temp + (Math.random() - 0.5) * 5))
+        },
+        memory: {
+          ...prev.memory,
+          used: Math.max(20, Math.min(95, prev.memory.used + (Math.random() - 0.5) * 8))
+        },
+        disk: {
+          ...prev.disk,
+          usage: Math.max(10, Math.min(80, prev.disk.usage + (Math.random() - 0.5) * 3)),
+          read: Math.max(0, Math.min(500, prev.disk.read + (Math.random() - 0.5) * 50)),
+          write: Math.max(0, Math.min(300, prev.disk.write + (Math.random() - 0.5) * 30))
+        },
+        network: {
+          ...prev.network,
+          download: Math.max(0, Math.min(100, prev.network.download + (Math.random() - 0.5) * 20)),
+          upload: Math.max(0, Math.min(50, prev.network.upload + (Math.random() - 0.5) * 10)),
+          latency: Math.max(5, Math.min(100, prev.network.latency + (Math.random() - 0.5) * 15))
         }
-        return prev + 2;
-      });
-    }, 100);
-  };
+      }));
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
+        staggerChildren: 0.1
       }
     }
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
+    visible: { opacity: 1, y: 0 }
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* AI-Enhanced Background */}
-      <div className="absolute inset-0">
-        {[...Array(30)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              width: Math.random() * 4 + 1,
-              height: Math.random() * 4 + 1,
-              background: i % 3 === 0 ? 'rgba(0, 191, 255, 0.4)' : 
-                         i % 3 === 1 ? 'rgba(76, 175, 80, 0.4)' : 
-                         'rgba(139, 92, 246, 0.4)'
-            }}
-            animate={{
-              opacity: [0, 1, 0],
-              scale: [0, 2, 0],
-              y: [0, -200, 0],
-              x: [0, Math.random() * 100 - 50, 0],
-            }}
-            transition={{
-              duration: 8 + Math.random() * 4,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-              ease: "easeInOut"
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="flex h-screen relative z-10">
-        {/* VS Code-like Sidebar */}
+    <div className="h-full overflow-auto relative">
+      <div className="p-6">
+        {/* Header */}
         <motion.div 
-          className="glass-sidebar w-80 flex flex-col"
-          initial={{ x: -100, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          className="mb-8"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
         >
-          {/* Header */}
-          <div className="p-6 border-b border-white/10">
-            <motion.div 
-              className="flex items-center space-x-3"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.3 }}
+          <div className="flex items-center space-x-4 mb-6">
+            <motion.div
+              className="w-12 h-12 bg-gradient-to-br from-accent-orange to-accent-red rounded-xl flex items-center justify-center"
+              animate={{
+                boxShadow: [
+                  "0 0 20px rgba(249, 115, 22, 0.4)",
+                  "0 0 30px rgba(249, 115, 22, 0.6)",
+                  "0 0 20px rgba(249, 115, 22, 0.4)"
+                ]
+              }}
+              transition={{ duration: 2, repeat: Infinity }}
             >
-              <motion.div 
-                className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center ai-glow"
-                animate={{ 
-                  rotate: [0, 5, -5, 0],
-                  scale: [1, 1.05, 1]
-                }}
-                transition={{ duration: 4, repeat: Infinity }}
-              >
-                <Sparkles className="w-6 h-6 text-white" />
-              </motion.div>
-              <div>
-                <h1 className="text-2xl font-bold text-gradient-ai">NUFFI AI</h1>
-                <p className="text-xs text-gray-400">Wow Factor Edition</p>
-              </div>
+              <Monitor className="w-6 h-6 text-white" />
             </motion.div>
+            <div>
+              <h1 className="text-3xl font-bold text-gradient-ai">Performance Monitor</h1>
+              <p className="text-text-secondary">Real-time system performance monitoring</p>
+            </div>
           </div>
 
-          {/* Navigation */}
+          {/* System Health Overview */}
           <motion.div 
-            className="flex-1 p-4 space-y-2"
+            className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
             {[
-              { icon: Brain, label: 'Agent Core', desc: 'AI coding assistant' },
-              { icon: Zap, label: 'Productivity Suite', desc: 'Task management' },
-              { icon: Globe, label: 'Forge Hub', desc: 'Community & marketplace' },
-              { icon: Settings, label: 'System Config', desc: 'Advanced settings' }
-            ].map((item, index) => {
-              const Icon = item.icon;
+              { label: 'System Health', value: `${systemHealth.overall}%`, icon: CheckCircle, color: 'accent-green' },
+              { label: 'Active Processes', value: systemHealth.processes, icon: Activity, color: 'accent-blue' },
+              { label: 'System Uptime', value: systemHealth.uptime, icon: Clock, color: 'accent-purple' },
+              { label: 'Active Alerts', value: systemHealth.alerts, icon: AlertTriangle, color: 'accent-orange' }
+            ].map((stat, index) => {
+              const Icon = stat.icon;
               return (
                 <motion.div
-                  key={item.label}
+                  key={index}
+                  className="glass-card hover-lift"
                   variants={itemVariants}
-                  className="glass-card p-4 hover-lift cursor-pointer group"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.02, y: -5 }}
                 >
-                  <div className="flex items-center space-x-3">
-                    <motion.div
-                      className="w-10 h-10 bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-lg flex items-center justify-center group-hover:ai-glow"
-                      whileHover={{ rotate: 10 }}
-                    >
-                      <Icon className="w-5 h-5 text-blue-400" />
-                    </motion.div>
-                    <div>
-                      <h3 className="font-semibold text-white">{item.label}</h3>
-                      <p className="text-xs text-gray-400">{item.desc}</p>
-                    </div>
+                  <div className="flex items-center justify-between mb-3">
+                    <Icon className={`w-8 h-8 text-${stat.color}`} />
+                    <span className={`text-xs px-2 py-1 rounded-full bg-${stat.color}/20 text-${stat.color}`}>
+                      Live
+                    </span>
+                  </div>
+                  <div>
+                    <p className="text-text-muted text-sm">{stat.label}</p>
+                    <p className="text-2xl font-bold text-text-primary">{stat.value}</p>
                   </div>
                 </motion.div>
               );
@@ -168,260 +143,239 @@ const WowFactorDemo: React.FC = () => {
           </motion.div>
         </motion.div>
 
-        {/* Main Content Area */}
-        <div className="flex-1 flex flex-col">
-          {/* Top Bar */}
-          <motion.div 
-            className="glass-card m-4 p-4 flex items-center justify-between"
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-          >
-            <div className="flex items-center space-x-4">
-              {/* Model Switch */}
-              <div className="flex items-center space-x-2">
-                <span className="text-sm text-gray-400">Model:</span>
-                <motion.select 
-                  value={selectedModel}
-                  onChange={(e) => setSelectedModel(e.target.value)}
-                  className="glass-input py-2 px-3 text-sm"
-                  whileFocus={{ scale: 1.02 }}
-                >
-                  <option value="Claude">Claude 3.5</option>
-                  <option value="GPT">GPT-4</option>
-                  <option value="Grok">Grok-2</option>
-                </motion.select>
-              </div>
-
-              {/* Autonomy Slider */}
-              <div className="flex items-center space-x-3">
-                <span className="text-sm text-gray-400">Autonomy:</span>
-                <div className="relative w-32">
-                  <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={autonomyLevel}
-                    onChange={(e) => setAutonomyLevel(Number(e.target.value))}
-                    className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
-                  />
-                  <motion.div
-                    className="absolute -top-8 left-0 text-xs text-blue-400 font-medium"
-                    animate={{ left: `${autonomyLevel}%` }}
-                    style={{ transform: 'translateX(-50%)' }}
-                  >
-                    {autonomyLevel}%
-                  </motion.div>
-                </div>
-              </div>
-            </div>
-
-            {/* Search */}
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search or ask AI..."
-                className="glass-input pl-10 pr-4 py-2 w-64"
-              />
-            </div>
-          </motion.div>
-
-          {/* Hero Card */}
-          <motion.div 
-            className="m-4 flex-1"
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.6 }}
-          >
-            <div className="glass-card p-8 h-full flex flex-col items-center justify-center text-center">
-              <motion.div
-                animate={{ 
-                  rotate: isScanning ? 360 : 0,
-                  scale: isScanning ? [1, 1.1, 1] : 1
-                }}
-                transition={{ 
-                  rotate: { duration: 2, repeat: isScanning ? Infinity : 0, ease: "linear" },
-                  scale: { duration: 1, repeat: isScanning ? Infinity : 0 }
-                }}
-                className="mb-6"
-              >
-                <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center ai-glow">
-                  {isScanning ? (
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                    >
-                      <RotateCcw className="w-12 h-12 text-white" />
-                    </motion.div>
-                  ) : (
-                    <Rocket className="w-12 h-12 text-white" />
-                  )}
-                </div>
-              </motion.div>
-
-              <motion.h2 
-                className="text-4xl font-bold text-gradient-ai mb-4"
-                animate={{ 
-                  textShadow: [
-                    "0 0 20px rgba(0, 191, 255, 0.5)",
-                    "0 0 40px rgba(0, 191, 255, 0.8)",
-                    "0 0 20px rgba(0, 191, 255, 0.5)"
-                  ]
-                }}
-                transition={{ duration: 3, repeat: Infinity }}
-              >
-                {isScanning ? 'AI Scanning in Progress...' : 'Welcome to the Future!'}
-              </motion.h2>
-
-              <motion.p 
-                className="text-gray-400 mb-8 max-w-md"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.8 }}
-              >
-                {isScanning 
-                  ? `Analyzing your development environment... ${scanProgress}%`
-                  : 'Experience the next generation of AI-powered development tools with glassmorphism design and smooth animations.'
-                }
-              </motion.p>
-
-              {/* Progress Bar */}
-              <AnimatePresence>
-                {isScanning && (
-                  <motion.div 
-                    className="w-full max-w-md mb-6"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                  >
-                    <div className="glass-card p-4">
-                      <div className="flex justify-between text-sm text-gray-400 mb-2">
-                        <span>Scanning system...</span>
-                        <span>{scanProgress}%</span>
-                      </div>
-                      <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
-                        <motion.div
-                          className="h-full bg-gradient-to-r from-blue-500 to-purple-600 ai-glow"
-                          initial={{ width: 0 }}
-                          animate={{ width: `${scanProgress}%` }}
-                          transition={{ duration: 0.3 }}
-                        />
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* Action Button */}
-              <motion.button
-                onClick={startScan}
-                disabled={isScanning}
-                className="ai-button text-lg px-8 py-4 disabled:opacity-50"
-                whileHover={{ scale: isScanning ? 1 : 1.05 }}
-                whileTap={{ scale: isScanning ? 1 : 0.95 }}
-                animate={!isScanning ? {
-                  boxShadow: [
-                    "0 8px 25px rgba(0, 191, 255, 0.3)",
-                    "0 12px 35px rgba(0, 191, 255, 0.5)",
-                    "0 8px 25px rgba(0, 191, 255, 0.3)"
-                  ]
-                } : {}}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                {isScanning ? (
-                  <>
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                    >
-                      <RotateCcw className="w-5 h-5" />
-                    </motion.div>
-                    <span>Scanning...</span>
-                  </>
-                ) : (
-                  <>
-                    <Zap className="w-5 h-5" />
-                    <span>Start AI Quick Scan</span>
-                  </>
-                )}
-              </motion.button>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Right AI Chat Sidebar */}
+        {/* Performance Metrics Grid */}
         <motion.div 
-          className="glass-sidebar w-80 border-l border-white/10"
-          initial={{ x: 100, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.2 }}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
         >
-          <div className="p-4 border-b border-white/10">
-            <h3 className="font-semibold text-white flex items-center space-x-2">
-              <Brain className="w-5 h-5 text-blue-400" />
-              <span>AI Assistant</span>
-            </h3>
+          {/* CPU Performance */}
+          <motion.div 
+            className="glass-card"
+            variants={itemVariants}
+          >
+            <div className="flex items-center space-x-3 mb-6">
+              <div className="w-10 h-10 bg-gradient-to-br from-accent-blue to-accent-purple rounded-xl flex items-center justify-center">
+                <Cpu className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold text-text-primary">CPU Performance</h2>
+                <p className="text-text-secondary text-sm">{realTimeMetrics.cpu.cores} cores • {realTimeMetrics.cpu.temp}°C</p>
+              </div>
+            </div>
+            
+            <div className="space-y-6">
+              <div className="text-center">
+                <div className="text-4xl font-bold text-gradient-ai mb-2">{realTimeMetrics.cpu.usage}%</div>
+                <div className="w-full bg-bg-quaternary rounded-full h-3 mb-4">
+                  <motion.div
+                    className="h-3 bg-gradient-to-r from-accent-blue to-accent-purple rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${realTimeMetrics.cpu.usage}%` }}
+                    transition={{ duration: 0.5 }}
+                  />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center p-3 rounded-lg bg-bg-quaternary/30">
+                  <div className="text-lg font-bold text-text-primary">{realTimeMetrics.cpu.temp}°C</div>
+                  <div className="text-xs text-text-muted">Temperature</div>
+                </div>
+                <div className="text-center p-3 rounded-lg bg-bg-quaternary/30">
+                  <div className="text-lg font-bold text-text-primary">{realTimeMetrics.cpu.cores}</div>
+                  <div className="text-xs text-text-muted">Cores</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Memory Usage */}
+          <motion.div 
+            className="glass-card"
+            variants={itemVariants}
+          >
+            <div className="flex items-center space-x-3 mb-6">
+              <div className="w-10 h-10 bg-gradient-to-br from-accent-green to-accent-blue rounded-xl flex items-center justify-center">
+                <Server className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold text-text-primary">Memory Usage</h2>
+                <p className="text-text-secondary text-sm">{realTimeMetrics.memory.total}GB total • {realTimeMetrics.memory.available}GB available</p>
+              </div>
+            </div>
+            
+            <div className="space-y-6">
+              <div className="text-center">
+                <div className="text-4xl font-bold text-gradient-ai mb-2">{realTimeMetrics.memory.used}%</div>
+                <div className="w-full bg-bg-quaternary rounded-full h-3 mb-4">
+                  <motion.div
+                    className="h-3 bg-gradient-to-r from-accent-green to-accent-blue rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${realTimeMetrics.memory.used}%` }}
+                    transition={{ duration: 0.5 }}
+                  />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center p-3 rounded-lg bg-bg-quaternary/30">
+                  <div className="text-lg font-bold text-text-primary">{((realTimeMetrics.memory.total * realTimeMetrics.memory.used) / 100).toFixed(1)}GB</div>
+                  <div className="text-xs text-text-muted">Used</div>
+                </div>
+                <div className="text-center p-3 rounded-lg bg-bg-quaternary/30">
+                  <div className="text-lg font-bold text-text-primary">{realTimeMetrics.memory.available}GB</div>
+                  <div className="text-xs text-text-muted">Available</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Disk I/O */}
+          <motion.div 
+            className="glass-card"
+            variants={itemVariants}
+          >
+            <div className="flex items-center space-x-3 mb-6">
+              <div className="w-10 h-10 bg-gradient-to-br from-accent-orange to-accent-red rounded-xl flex items-center justify-center">
+                <HardDrive className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold text-text-primary">Disk I/O</h2>
+                <p className="text-text-secondary text-sm">Read/Write operations per second</p>
+              </div>
+            </div>
+            
+            <div className="space-y-6">
+              <div className="text-center">
+                <div className="text-4xl font-bold text-gradient-ai mb-2">{realTimeMetrics.disk.usage}%</div>
+                <div className="w-full bg-bg-quaternary rounded-full h-3 mb-4">
+                  <motion.div
+                    className="h-3 bg-gradient-to-r from-accent-orange to-accent-red rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${realTimeMetrics.disk.usage}%` }}
+                    transition={{ duration: 0.5 }}
+                  />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center p-3 rounded-lg bg-bg-quaternary/30">
+                  <div className="text-lg font-bold text-text-primary">{realTimeMetrics.disk.read} MB/s</div>
+                  <div className="text-xs text-text-muted">Read Speed</div>
+                </div>
+                <div className="text-center p-3 rounded-lg bg-bg-quaternary/30">
+                  <div className="text-lg font-bold text-text-primary">{realTimeMetrics.disk.write} MB/s</div>
+                  <div className="text-xs text-text-muted">Write Speed</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Network Activity */}
+          <motion.div 
+            className="glass-card"
+            variants={itemVariants}
+          >
+            <div className="flex items-center space-x-3 mb-6">
+              <div className="w-10 h-10 bg-gradient-to-br from-accent-purple to-accent-pink rounded-xl flex items-center justify-center">
+                <Wifi className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold text-text-primary">Network Activity</h2>
+                <p className="text-text-secondary text-sm">Real-time network usage • {realTimeMetrics.network.latency}ms latency</p>
+              </div>
+            </div>
+            
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-accent-green mb-1">{realTimeMetrics.network.download} MB/s</div>
+                  <div className="text-xs text-text-muted mb-2">Download</div>
+                  <div className="w-full bg-bg-quaternary rounded-full h-2">
+                    <motion.div
+                      className="h-2 bg-accent-green rounded-full"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${(realTimeMetrics.network.download / 100) * 100}%` }}
+                      transition={{ duration: 0.5 }}
+                    />
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-accent-blue mb-1">{realTimeMetrics.network.upload} MB/s</div>
+                  <div className="text-xs text-text-muted mb-2">Upload</div>
+                  <div className="w-full bg-bg-quaternary rounded-full h-2">
+                    <motion.div
+                      className="h-2 bg-accent-blue rounded-full"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${(realTimeMetrics.network.upload / 50) * 100}%` }}
+                      transition={{ duration: 0.5 }}
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="text-center p-3 rounded-lg bg-bg-quaternary/30">
+                <div className="text-lg font-bold text-text-primary">{realTimeMetrics.network.latency}ms</div>
+                <div className="text-xs text-text-muted">Network Latency</div>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* System Processes */}
+        <motion.div 
+          className="mt-6 glass-card"
+          variants={itemVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <div className="flex items-center space-x-3 mb-6">
+            <div className="w-10 h-10 bg-gradient-to-br from-accent-purple to-accent-blue rounded-xl flex items-center justify-center">
+              <BarChart3 className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-text-primary">Top System Processes</h2>
+              <p className="text-text-secondary text-sm">Most resource-intensive processes</p>
+            </div>
           </div>
           
-          <div className="flex-1 p-4 space-y-4">
+          <div className="space-y-3">
             {[
-              { type: 'ai', message: 'Hello! I\'m your AI assistant. How can I help you today?' },
-              { type: 'user', message: 'Can you scan my development environment?' },
-              { type: 'ai', message: 'Of course! I\'ll run a comprehensive scan to detect all your tools and suggest optimizations.' }
-            ].map((chat, index) => (
+              { name: 'Nuffi Development', cpu: 15.2, memory: 8.4, status: 'active' },
+              { name: 'VS Code', cpu: 12.8, memory: 6.2, status: 'active' },
+              { name: 'Chrome Browser', cpu: 8.5, memory: 12.1, status: 'active' },
+              { name: 'Node.js Server', cpu: 6.3, memory: 4.8, status: 'active' },
+              { name: 'System Monitor', cpu: 3.1, memory: 2.2, status: 'active' }
+            ].map((process, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, x: chat.type === 'ai' ? -20 : 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1 + index * 0.3 }}
-                className={`glass-card p-3 ${chat.type === 'ai' ? 'ai-glow' : ''}`}
+                className="flex items-center justify-between p-4 rounded-lg bg-bg-quaternary/30 hover:bg-bg-quaternary/50 transition-colors"
+                whileHover={{ scale: 1.01 }}
               >
-                <p className="text-sm text-white">{chat.message}</p>
+                <div className="flex items-center space-x-4">
+                  <div className="w-2 h-2 rounded-full bg-accent-green" />
+                  <div>
+                    <p className="text-sm font-medium text-text-primary">{process.name}</p>
+                    <p className="text-xs text-text-muted">Status: {process.status}</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-6 text-sm">
+                  <div className="text-center">
+                    <div className="text-text-primary font-medium">{process.cpu}%</div>
+                    <div className="text-text-muted text-xs">CPU</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-text-primary font-medium">{process.memory}%</div>
+                    <div className="text-text-muted text-xs">Memory</div>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
-
-          <div className="p-4 border-t border-white/10">
-            <div className="flex space-x-2">
-              <input
-                type="text"
-                placeholder="Ask AI anything..."
-                className="glass-input flex-1 text-sm"
-              />
-              <motion.button
-                className="ai-button p-2"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Play className="w-4 h-4" />
-              </motion.button>
-            </div>
-          </div>
         </motion.div>
       </div>
-
-      <style>{`
-        .slider::-webkit-slider-thumb {
-          appearance: none;
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #00BFFF, #8b5cf6);
-          cursor: pointer;
-          box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
-        }
-        
-        .slider::-moz-range-thumb {
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #00BFFF, #8b5cf6);
-          cursor: pointer;
-          border: none;
-          box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
-        }
-      `}</style>
     </div>
   );
 };

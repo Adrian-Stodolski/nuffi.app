@@ -35,7 +35,7 @@ const WorkspaceHub: React.FC = () => {
 
   if (loading.workspaces) {
     return (
-      <div className="flex items-center justify-center h-full bg-gray-900">
+      <div className="flex items-center justify-center h-full">
         <motion.div 
           className="text-center"
           initial={{ opacity: 0, scale: 0.8 }}
@@ -54,38 +54,9 @@ const WorkspaceHub: React.FC = () => {
   }
 
   return (
-    <div className="h-full overflow-hidden relative">
-      {/* AI-Enhanced floating particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              background: i % 3 === 0 ? 'rgba(0, 191, 255, 0.3)' : 
-                         i % 3 === 1 ? 'rgba(76, 175, 80, 0.3)' : 
-                         'rgba(139, 92, 246, 0.3)'
-            }}
-            animate={{
-              opacity: [0, 1, 0],
-              scale: [0, 1.5, 0],
-              y: [0, -150, 0],
-              x: [0, Math.random() * 50 - 25, 0],
-            }}
-            transition={{
-              duration: 6 + Math.random() * 3,
-              repeat: Infinity,
-              delay: Math.random() * 3,
-              ease: "easeInOut"
-            }}
-          />
-        ))}
-      </div>
-
+    <div className="h-full overflow-auto relative">
       <motion.div 
-        className="p-6 h-full relative z-10"
+        className="p-6 h-full"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -156,7 +127,7 @@ const WorkspaceHub: React.FC = () => {
             <motion.input
               type="text"
               placeholder="Search workspaces..."
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg pl-10 pr-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-green-500 transition-all duration-200"
+              className="glass-input w-full pl-10"
               whileFocus={{ 
                 scale: 1.02,
                 borderColor: "#10b981",
@@ -165,7 +136,7 @@ const WorkspaceHub: React.FC = () => {
             />
           </div>
           <motion.select 
-            className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-green-500 transition-all duration-200"
+            className="glass-select px-4 py-2"
             whileFocus={{ scale: 1.02 }}
           >
             <option>All Types</option>
@@ -188,7 +159,7 @@ const WorkspaceHub: React.FC = () => {
             >
               {/* Plus icon w kółku - dokładnie jak na zdjęciu */}
               <motion.div 
-                className="w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mb-6 border-2 border-gray-700"
+                className="w-24 h-24 glass-card rounded-full flex items-center justify-center mb-6"
                 animate={{ 
                   scale: [1, 1.05, 1],
                   borderColor: ["#374151", "#4b5563", "#374151"]
@@ -265,7 +236,7 @@ const WorkspaceHub: React.FC = () => {
               {workspaces.map((workspace, index) => (
                 <motion.div
                   key={workspace.id}
-                  className="bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-gray-600 transition-all duration-200 cursor-pointer group"
+                  className="glass-card hover-lift cursor-pointer group"
                   variants={itemVariants}
                   whileHover={{ 
                     scale: 1.03,
@@ -286,8 +257,8 @@ const WorkspaceHub: React.FC = () => {
                     <motion.span 
                       className={`px-2 py-1 rounded-full text-xs font-medium ${
                         workspace.status === 'active' 
-                          ? 'bg-green-900 text-green-300 border border-green-700' 
-                          : 'bg-gray-700 text-gray-300 border border-gray-600'
+                          ? 'bg-accent-green/20 text-accent-green border border-accent-green/30' 
+                          : 'bg-bg-quaternary/30 text-text-muted border border-border'
                       }`}
                       animate={workspace.status === 'active' ? {
                         boxShadow: [

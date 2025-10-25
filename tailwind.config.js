@@ -8,29 +8,30 @@ export default {
   theme: {
     extend: {
       colors: {
-        // NUFFI Dark Theme Colors
-        'bg-primary': '#0a0a0b',
-        'bg-secondary': '#111113',
-        'bg-tertiary': '#1a1a1d',
-        'bg-quaternary': '#242428',
+        // NUFFI 2025 "Wow Factor" Colors - matching CSS variables
+        'bg-primary': '#0A0A0F',
+        'bg-secondary': '#111118',
+        'bg-tertiary': '#1a1a22',
+        'bg-quaternary': '#242430',
         
         'text-primary': '#ffffff',
         'text-secondary': '#b4b4b8',
         'text-muted': '#6b6b70',
         'text-disabled': '#404045',
         
-        'border': '#2a2a2e',
-        'border-hover': '#3a3a3e',
-        'border-focus': '#4a4a4e',
+        'border': 'rgba(255, 255, 255, 0.1)',
+        'border-hover': 'rgba(255, 255, 255, 0.2)',
+        'border-focus': 'rgba(0, 191, 255, 0.5)',
         
-        'accent-blue': '#3b82f6',
-        'accent-blue-hover': '#2563eb',
+        // Electric Blue for AI Elements
+        'accent-blue': '#00BFFF',
+        'accent-blue-hover': '#0099CC',
         'accent-purple': '#8b5cf6',
-        'accent-green': '#10b981',
+        'accent-green': '#4CAF50',
         'accent-orange': '#f59e0b',
         'accent-red': '#ef4444',
         
-        'status-active': '#22c55e',
+        'status-active': '#4CAF50',
         'status-warning': '#f59e0b',
         'status-error': '#ef4444',
         'status-inactive': '#6b7280',

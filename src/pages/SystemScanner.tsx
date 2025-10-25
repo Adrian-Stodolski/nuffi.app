@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAppStore } from '../stores/appStore';
 import { Tool } from '../types';
-import { Search, RefreshCw, CheckCircle, XCircle, AlertTriangle, HelpCircle } from 'lucide-react';
+import { Search, RefreshCw, CheckCircle, XCircle, AlertTriangle, HelpCircle, Download } from 'lucide-react';
+import InstallationProgress from '../components/InstallationProgress';
 
 const SystemScanner: React.FC = () => {
   const { tools, loading, scanSystem } = useAppStore();
   const [isScanning, setIsScanning] = useState(false);
   const [scanProgress, setScanProgress] = useState(0);
+  const [isInstalling, setIsInstalling] = useState(false);
+  const [installationSteps, setInstallationSteps] = useState<Array<{name: string, status: 'pending' | 'running' | 'completed' | 'error'}>>([]);
+  const [installationComplete, setInstallationComplete] = useState<{toolName: string, success: boolean} | null>(null);
 
   const handleScan = async () => {
     setIsScanning(true);
@@ -21,6 +25,46 @@ const SystemScanner: React.FC = () => {
       setIsScanning(false);
       setScanProgress(0);
     }
+  };
+
+  const handleInstallTool = async (toolName: string) => {
+    setIsInstalling(true);
+    const steps = [
+      { name: `Downloading ${toolName}`, status: 'pending' as const },
+      { name: 'Verifying package integrity', status: 'pending' as const },
+      { name: 'Installing dependencies', status: 'pending' as const },
+      { name: `Configuring ${toolName}`, status: 'pending' as const },
+      { name: 'Updating PATH variables', status: 'pending' as const },
+      { name: 'Verifying installation', status: 'pending' as const }
+    ];
+    
+    setInstallationSteps(steps);
+
+    // Simulate installation process
+    for (let i = 0; i < steps.length; i++) {
+      setInstallationSteps(prev => prev.map((step, index) => 
+        index === i ? { ...step, status: 'running' } : step
+      ));
+      
+      await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
+      
+      setInstallationSteps(prev => prev.map((step, index) => 
+        index === i ? { ...step, status: 'completed' } : step
+      ));
+    }
+
+    setTimeout(() => {
+      setIsInstalling(false);
+      setInstallationSteps([]);
+      setInstallationComplete({ toolName, success: true });
+      // Refresh scan after installation
+      handleScan();
+      
+      // Hide completion message after 5 seconds
+      setTimeout(() => {
+        setInstallationComplete(null);
+      }, 5000);
+    }, 1000);
   };
 
   const getStatusColor = (status: Tool['status']) => {
@@ -97,7 +141,7 @@ const SystemScanner: React.FC = () => {
   };
 
   return (
-    <div className="h-full bg-gray-900 overflow-auto">
+    <div className="h-full overflow-auto">
       <motion.div 
         className="max-w-6xl mx-auto p-6"
         variants={containerVariants}
@@ -130,6 +174,77 @@ const SystemScanner: React.FC = () => {
             Scan your system to detect installed development tools and their versions.
           </motion.p>
         </motion.div>
+
+        {/* Installation Progress */}
+        <AnimatePresence>
+          {isInstalling && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="mb-8"
+            >
+              <InstallationProgress 
+                steps={installationSteps}
+                title="Installing Development Tool"
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Installation Complete Summary */}
+        <AnimatePresence>
+          {installationComplete && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: -20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: -20 }}
+              className="mb-8"
+            >
+              <div className="glass-card border-accent-green/30 bg-accent-green/5">
+                <div className="flex items-center space-x-4">
+                  <motion.div
+                    className="w-12 h-12 bg-accent-green/20 rounded-xl flex items-center justify-center"
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <CheckCircle className="w-6 h-6 text-accent-green" />
+                  </motion.div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-accent-green mb-1">
+                      Installation Complete!
+                    </h3>
+                    <p className="text-text-secondary">
+                      <span className="font-medium text-text-primary">{installationComplete.toolName}</span> has been successfully installed and configured.
+                    </p>
+                    <div className="flex items-center space-x-4 mt-3 text-sm text-text-muted">
+                      <div className="flex items-center space-x-1">
+                        <CheckCircle className="w-3 h-3 text-accent-green" />
+                        <span>Added to PATH</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <CheckCircle className="w-3 h-3 text-accent-green" />
+                        <span>Dependencies resolved</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <CheckCircle className="w-3 h-3 text-accent-green" />
+                        <span>Ready to use</span>
+                      </div>
+                    </div>
+                  </div>
+                  <motion.button
+                    onClick={() => setInstallationComplete(null)}
+                    className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <XCircle className="w-4 h-4 text-text-muted" />
+                  </motion.button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Scan Controls */}
         <div className="nuffi-card mb-8">
@@ -255,6 +370,19 @@ const SystemScanner: React.FC = () => {
                         <div className={`status-badge ${getStatusBadge(tool.status)}`}>
                           {tool.status.replace('-', ' ').toUpperCase()}
                         </div>
+                        
+                        {(tool.status === 'not-installed' || tool.status === 'outdated') && (
+                          <motion.button
+                            onClick={() => handleInstallTool(tool.name)}
+                            disabled={isInstalling}
+                            className="ai-button px-3 py-1 text-sm flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                          >
+                            <Download className="w-3 h-3" />
+                            <span>{tool.status === 'outdated' ? 'Update' : 'Install'}</span>
+                          </motion.button>
+                        )}
                       </div>
                     </div>
                   ))}

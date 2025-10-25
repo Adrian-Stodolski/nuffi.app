@@ -17,7 +17,10 @@
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@hookform/resolvers": "^3.3.2",
+    "@react-three/drei": "^10.7.6",
+    "@react-three/fiber": "^9.4.0",
     "@tauri-apps/api": "^2.8.0",
+    "@types/three": "^0.180.0",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
     "framer-motion": "^10.18.0",
@@ -29,6 +32,7 @@
     "react-router-dom": "^6.20.1",
     "recharts": "^2.15.4",
     "tailwind-merge": "^2.0.0",
+    "three": "^0.180.0",
     "zod": "^3.22.4",
     "zustand": "^4.4.7"
   },

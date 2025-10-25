@@ -1,8 +1,11 @@
-import React from 'react';
-import { Search, Star, Download, Filter } from 'lucide-react';
+import React, { useState } from 'react';
+import { Search, Star, Download, Filter, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Marketplace: React.FC = () => {
+  const [applyingTemplate, setApplyingTemplate] = useState<number | null>(null);
+  const [appliedTemplates, setAppliedTemplates] = useState<Set<number>>(new Set());
+
   const templates = [
     {
       id: 1,
@@ -46,6 +49,16 @@ const Marketplace: React.FC = () => {
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 }
+  };
+
+  const handleUseTemplate = async (id: number) => {
+    setApplyingTemplate(id);
+    
+    // Simulate template application
+    await new Promise(resolve => setTimeout(resolve, 2000 + Math.random() * 2000));
+    
+    setAppliedTemplates(prev => new Set([...prev, id]));
+    setApplyingTemplate(null);
   };
 
   return (
@@ -101,6 +114,7 @@ const Marketplace: React.FC = () => {
               variants={itemVariants}
               whileHover={{ 
                 scale: 1.02,
+                y: -5,
                 rotateY: 2,
                 rotateX: 2
               }}
@@ -135,16 +149,40 @@ const Marketplace: React.FC = () => {
                 ))}
               </div>
 
-              <motion.button 
-                className="ai-button w-full"
-                whileHover={{ 
-                  scale: 1.02,
-                  boxShadow: "0 8px 25px rgba(76, 175, 80, 0.4)"
-                }}
-                whileTap={{ scale: 0.98 }}
-              >
-                Use Template
-              </motion.button>
+              {appliedTemplates.has(template.id) ? (
+                <div className="ai-button w-full flex items-center justify-center space-x-2 bg-accent-green/20 text-accent-green cursor-default">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>Applied</span>
+                </div>
+              ) : (
+                <motion.button 
+                  onClick={() => handleUseTemplate(template.id)}
+                  disabled={applyingTemplate === template.id}
+                  className="ai-button w-full flex items-center justify-center space-x-2 disabled:opacity-50"
+                  whileHover={{ 
+                    scale: 1.02,
+                    boxShadow: "0 8px 25px rgba(76, 175, 80, 0.4)"
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {applyingTemplate === template.id ? (
+                    <>
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      >
+                        <CheckCircle className="w-4 h-4" />
+                      </motion.div>
+                      <span>Applying...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Download className="w-4 h-4" />
+                      <span>Use Template</span>
+                    </>
+                  )}
+                </motion.button>
+              )}
             </motion.div>
           ))}
         </motion.div>
