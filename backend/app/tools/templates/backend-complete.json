@@ -1,0 +1,231 @@
+{
+  "id": "backend-complete",
+  "name": "Backend Development",
+  "slug": "backend-complete",
+  "category": "Server Development",
+  "description": "Server-side development with APIs, databases, and microservices",
+  "long_description": "Complete backend development stack with Node.js, Python, databases, and containerization. Perfect for building scalable APIs, microservices, and server-side applications with modern frameworks and tools.",
+  "thumbnail_url": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400",
+  "author_type": "official",
+  "is_official": true,
+  "is_public": true,
+  "gui_tools": [
+    "vscode",
+    "postman",
+    "docker-desktop",
+    "dbeaver"
+  ],
+  "cli_tools": [
+    "nodejs",
+    "python",
+    "git",
+    "docker",
+    "postgresql-client",
+    "mysql-client",
+    "mongosh",
+    "redis-cli"
+  ],
+  "packages": {
+    "npm": [
+      "typescript",
+      "nodemon",
+      "pm2",
+      "express",
+      "fastify",
+      "nestjs",
+      "prisma",
+      "typeorm",
+      "sequelize",
+      "mongoose",
+      "jsonwebtoken",
+      "bcrypt",
+      "dotenv",
+      "cors",
+      "helmet",
+      "joi",
+      "zod",
+      "jest",
+      "supertest"
+    ],
+    "frameworks": {
+      "express": ["express", "express-rate-limit", "express-validator"],
+      "fastify": ["fastify", "@fastify/cors", "@fastify/helmet"],
+      "nestjs": ["@nestjs/core", "@nestjs/common", "@nestjs/platform-express"]
+    },
+    "databases": {
+      "postgresql": ["pg", "pg-hstore"],
+      "mysql": ["mysql2"],
+      "mongodb": ["mongodb", "mongoose"],
+      "redis": ["redis", "ioredis"]
+    },
+    "orms": [
+      "prisma",
+      "typeorm",
+      "sequelize",
+      "mongoose",
+      "kysely"
+    ],
+    "authentication": [
+      "passport",
+      "jsonwebtoken",
+      "bcrypt",
+      "@auth/core"
+    ],
+    "validation": [
+      "zod",
+      "joi",
+      "yup",
+      "class-validator"
+    ],
+    "testing": [
+      "jest",
+      "supertest",
+      "vitest",
+      "mocha",
+      "chai"
+    ],
+    "utilities": [
+      "dotenv",
+      "nodemon",
+      "winston",
+      "axios",
+      "date-fns",
+      "lodash"
+    ]
+  },
+  "python_packages": [
+    "fastapi",
+    "django",
+    "flask",
+    "sqlalchemy",
+    "psycopg2-binary",
+    "pymongo",
+    "redis",
+    "pyjwt",
+    "passlib",
+    "python-jose",
+    "pytest",
+    "httpx",
+    "faker",
+    "python-dotenv",
+    "pydantic",
+    "uvicorn",
+    "gunicorn"
+  ],
+  "dotfiles": [
+    {
+      "filename": ".env.template",
+      "source": "template",
+      "content": "DATABASE_URL=postgresql://user:password@localhost:5432/dbname\nREDIS_URL=redis://localhost:6379\nJWT_SECRET=your-secret-key-here\nPORT=3000\nNODE_ENV=development"
+    },
+    {
+      "filename": ".dockerignore",
+      "source": "template",
+      "content": "node_modules\nnpm-debug.log\n.env\n.git\n.gitignore\nREADME.md\n.DS_Store\ncoverage"
+    },
+    {
+      "filename": "docker-compose.yml",
+      "source": "template",
+      "content": "version: '3.8'\nservices:\n  postgres:\n    image: postgres:16\n    environment:\n      POSTGRES_PASSWORD: postgres\n    ports:\n      - \"5432:5432\"\n    volumes:\n      - postgres_data:/var/lib/postgresql/data\n\n  redis:\n    image: redis:7-alpine\n    ports:\n      - \"6379:6379\"\n\n  mongodb:\n    image: mongo:7\n    ports:\n      - \"27017:27017\"\n    volumes:\n      - mongo_data:/data/db\n\nvolumes:\n  postgres_data:\n  mongo_data:"
+    },
+    {
+      "filename": ".gitignore",
+      "source": "template",
+      "content": "node_modules/\n.env\n.env.local\n.env.production\ndist/\nbuild/\nlogs/\n*.log\n.DS_Store\ncoverage/\n__pycache__/\n*.pyc\n.pytest_cache/"
+    }
+  ],
+  "starter_projects": [
+    {
+      "name": "Node.js REST API (Express + TypeScript + Prisma)",
+      "description": "Production-ready REST API with authentication",
+      "template": "express-ts-prisma",
+      "features": [
+        "Express server setup",
+        "TypeScript configured",
+        "Prisma ORM + PostgreSQL",
+        "JWT authentication",
+        "API documentation (Swagger)",
+        "Docker Compose",
+        "Jest tests"
+      ]
+    },
+    {
+      "name": "Python FastAPI + PostgreSQL",
+      "description": "High-performance Python API",
+      "template": "fastapi-postgres",
+      "features": [
+        "FastAPI app structure",
+        "SQLAlchemy ORM",
+        "Alembic migrations",
+        "Pydantic models",
+        "JWT auth",
+        "OpenAPI docs auto-generated",
+        "pytest tests"
+      ]
+    },
+    {
+      "name": "Node.js GraphQL Server",
+      "description": "Modern GraphQL API with Apollo Server",
+      "template": "graphql-apollo",
+      "features": [
+        "Apollo Server",
+        "GraphQL schema",
+        "Resolvers",
+        "Authentication",
+        "Database integration",
+        "GraphQL Playground"
+      ]
+    },
+    {
+      "name": "Microservices Boilerplate",
+      "description": "Multi-service architecture template",
+      "template": "microservices",
+      "features": [
+        "Multiple services",
+        "Docker Compose orchestration",
+        "API Gateway",
+        "Service discovery",
+        "Shared database",
+        "Message queue (RabbitMQ)"
+      ]
+    }
+  ],
+  "extensions": [
+    {
+      "vscode": [
+        "ms-python.python",
+        "ms-python.pylance",
+        "ms-vscode.vscode-typescript-next",
+        "prisma.prisma",
+        "ms-vscode-remote.remote-containers",
+        "humao.rest-client",
+        "cweijan.vscode-database-client2",
+        "bradlc.vscode-tailwindcss"
+      ]
+    }
+  ],
+  "settings": {
+    "vscode": {
+      "python.defaultInterpreterPath": "./venv/bin/python",
+      "python.linting.enabled": true,
+      "python.linting.pylintEnabled": true,
+      "editor.formatOnSave": true,
+      "files.associations": {
+        "*.prisma": "prisma"
+      }
+    }
+  },
+  "requirements": {
+    "os": ["Windows 10+", "macOS 10.15+", "Ubuntu 20.04+"],
+    "minDiskSpace": "12 GB",
+    "minRam": "16 GB",
+    "setup_time": "15-18 min",
+    "difficulty": "Intermediate"
+  },
+  "tags": ["nodejs", "python", "express", "fastapi", "postgresql", "mongodb", "docker", "api"],
+  "downloads": 12850,
+  "rating_average": 4.8,
+  "rating_count": 980,
+  "created_at": "2024-01-15T10:00:00Z",
+  "updated_at": "2024-01-20T15:30:00Z"
+}

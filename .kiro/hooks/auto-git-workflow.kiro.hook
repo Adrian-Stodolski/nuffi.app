@@ -1,5 +1,5 @@
 {
-  "enabled": true,
+  "enabled": false,
   "name": "Auto Git Workflow",
   "description": "Automatically stages, commits, and pushes changes when files are saved in the project",
   "version": "1",

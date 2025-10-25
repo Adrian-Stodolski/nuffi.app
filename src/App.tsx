@@ -1,14 +1,14 @@
-
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import AnimatedBackground from './components/AnimatedBackground';
 import Sidebar from './components/Layout/Sidebar';
 import WorkspaceHub from './pages/WorkspaceHub';
 import CreateWorkspace from './pages/CreateWorkspace';
 import Marketplace from './pages/Marketplace';
 import AICenter from './pages/AICenter';
 import Community from './pages/Community';
-import SystemScanner from './pages/SystemScanner.tsx';
+import SystemScanner from './pages/SystemScanner';
 import Settings from './pages/Settings';
 import V3Ultimate from './pages/V3Ultimate';
 import WowFactorDemo from './pages/WowFactorDemo';
@@ -16,32 +16,31 @@ import PowerMode from './pages/PowerMode';
 import WorkflowDesigner from './pages/WorkflowDesigner';
 import PresetWizard from './pages/PresetWizard';
 import AIRecommendations from './pages/AIRecommendations';
-import AnimatedBackground from './components/AnimatedBackground';
+import { Workspaces } from './pages/Workspaces';
+import { TeamSetup } from './pages/TeamSetup';
 
 import './App.css';
 
 function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-
+  
   const handleMenuToggle = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
 
+  console.log('🚀 NUFFI App is rendering');
+
   return (
     <Router>
-      <div className="flex h-screen bg-gradient-to-br from-bg-primary via-bg-secondary to-bg-primary text-white relative overflow-hidden">
-        {/* Global V3Ultimate Background */}
+      <div className="flex h-screen bg-bg-primary text-white relative overflow-hidden">
         <AnimatedBackground />
         
-        {/* Sidebar with integrated TopBar - as one unit */}
         <Sidebar 
           collapsed={sidebarCollapsed} 
           onMenuToggle={handleMenuToggle}
         />
         
-        {/* Main Content - Static, just fills remaining space */}
-        <main className="flex-1 h-full overflow-hidden relative z-10">
-          {/* Page Content */}
+        <main className="flex-1 h-full overflow-hidden relative" style={{ zIndex: 20 }}>
           <div className="h-full overflow-auto p-6">
             <Routes>
               <Route path="/" element={<WorkspaceHub />} />
@@ -57,12 +56,12 @@ function App() {
               <Route path="/preset-wizard" element={<PresetWizard />} />
               <Route path="/power-mode" element={<PowerMode />} />
               <Route path="/workflow-designer" element={<WorkflowDesigner />} />
+              <Route path="/workspaces" element={<Workspaces />} />
+              <Route path="/team-setup" element={<TeamSetup />} />
             </Routes>
           </div>
         </main>
       </div>
-
-
 
       {/* Toast Notifications */}
       <Toaster

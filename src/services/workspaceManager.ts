@@ -1,6 +1,5 @@
 import { invoke } from '@tauri-apps/api/core';
 import { Workspace, WorkspaceConfig, CreateWorkspaceRequest, InstalledTool, WorkspaceType } from '../types';
-import { notificationService } from './notificationService';
 
 export class WorkspaceManager {
   private static instance: WorkspaceManager;

@@ -1,0 +1,82 @@
+{
+  "id": "nodejs",
+  "name": "Node.js",
+  "type": "CLI",
+  "category": "runtime",
+  "description": "JavaScript runtime built on Chrome's V8 JavaScript engine",
+  "version": "20.11.0",
+  "publisher": "Node.js Foundation",
+  "website": "https://nodejs.org",
+  "platforms": {
+    "windows": {
+      "packageManager": "chocolatey",
+      "packageName": "nodejs",
+      "version": "20.11.0",
+      "installCommand": "choco install nodejs --version=20.11.0 -y",
+      "pathUpdates": [
+        "%ProgramFiles%\\nodejs",
+        "%APPDATA%\\npm"
+      ],
+      "verification": {
+        "commands": [
+          "node --version",
+          "npm --version"
+        ]
+      },
+      "size": "50 MB"
+    },
+    "macos": {
+      "packageManager": "homebrew",
+      "packageName": "node@20",
+      "installCommand": "brew install node@20",
+      "pathUpdates": [
+        "/usr/local/opt/node@20/bin"
+      ],
+      "postInstall": [
+        "npm install -g npm@latest",
+        "npm config set prefix '~/.npm-global'"
+      ],
+      "verification": {
+        "commands": [
+          "node --version",
+          "npm --version"
+        ]
+      },
+      "size": "45 MB"
+    },
+    "linux": {
+      "ubuntu": {
+        "installCommands": [
+          "curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -",
+          "sudo apt-get install -y nodejs"
+        ],
+        "verification": {
+          "commands": [
+            "node --version",
+            "npm --version"
+          ]
+        },
+        "size": "40 MB"
+      },
+      "fedora": {
+        "installCommands": [
+          "sudo dnf install -y nodejs npm"
+        ]
+      }
+    }
+  },
+  "globalPackages": [
+    "typescript",
+    "eslint",
+    "prettier",
+    "nodemon",
+    "@types/node"
+  ],
+  "dependencies": [],
+  "tags": ["javascript", "runtime", "npm", "backend", "frontend"],
+  "requirements": {
+    "minRam": "512 MB",
+    "minDisk": "100 MB",
+    "os": ["Windows 10+", "macOS 10.15+", "Ubuntu 18.04+"]
+  }
+}

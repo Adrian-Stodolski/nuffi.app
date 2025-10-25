@@ -118,16 +118,10 @@ const WorkspaceHub: React.FC = () => {
           variants={itemVariants}
         >
           <div className="flex-1 relative">
-            <motion.div
-              animate={{ x: [0, 2, 0] }}
-              transition={{ duration: 3, repeat: Infinity }}
-            >
-              <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
-            </motion.div>
             <motion.input
               type="text"
               placeholder="Search workspaces..."
-              className="glass-input w-full pl-10"
+              className="glass-input w-full"
               whileFocus={{ 
                 scale: 1.02,
                 borderColor: "#10b981",
@@ -136,7 +130,7 @@ const WorkspaceHub: React.FC = () => {
             />
           </div>
           <motion.select 
-            className="glass-select px-4 py-2"
+            className="glass-select"
             whileFocus={{ scale: 1.02 }}
           >
             <option>All Types</option>

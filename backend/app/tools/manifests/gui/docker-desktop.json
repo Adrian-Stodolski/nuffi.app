@@ -1,0 +1,92 @@
+{
+  "id": "docker-desktop",
+  "name": "Docker Desktop",
+  "type": "GUI",
+  "category": "containerization",
+  "description": "The fastest way to containerize applications on your desktop",
+  "version": "4.26.1",
+  "publisher": "Docker Inc.",
+  "website": "https://www.docker.com/products/docker-desktop",
+  "platforms": {
+    "windows": {
+      "installer": {
+        "type": "exe",
+        "url": "https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe",
+        "checksum": "sha256:xyz789abc123...",
+        "silentArgs": "install --quiet",
+        "requiresAdmin": true,
+        "size": "500 MB"
+      },
+      "postInstall": [
+        {
+          "action": "enable_wsl2",
+          "description": "Enable WSL2 backend for better performance"
+        },
+        {
+          "action": "configure_resources",
+          "settings": {
+            "memory": "4GB",
+            "cpus": 2,
+            "disk": "60GB"
+          }
+        }
+      ],
+      "verification": {
+        "command": "docker --version",
+        "expectedOutput": "Docker version"
+      },
+      "requirements": {
+        "wsl2": true,
+        "virtualization": true
+      }
+    },
+    "macos": {
+      "installer": {
+        "type": "dmg",
+        "url": "https://desktop.docker.com/mac/main/amd64/Docker.dmg",
+        "checksum": "sha256:abc123xyz789...",
+        "installPath": "/Applications/Docker.app",
+        "size": "450 MB"
+      },
+      "postInstall": [
+        {
+          "action": "configure_resources",
+          "settings": {
+            "memory": "4GB",
+            "cpus": 2
+          }
+        }
+      ],
+      "verification": {
+        "command": "docker --version",
+        "expectedOutput": "Docker version"
+      }
+    },
+    "linux": {
+      "ubuntu": {
+        "installCommands": [
+          "sudo apt-get update",
+          "sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release",
+          "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg",
+          "echo \"deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null",
+          "sudo apt-get update",
+          "sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin",
+          "sudo usermod -aG docker $USER"
+        ],
+        "verification": {
+          "command": "docker --version",
+          "expectedOutput": "Docker version"
+        },
+        "size": "200 MB"
+      }
+    }
+  },
+  "dependencies": [],
+  "tags": ["docker", "containers", "virtualization", "devops"],
+  "requirements": {
+    "minRam": "4 GB",
+    "minDisk": "4 GB",
+    "os": ["Windows 10 Pro+", "macOS 10.15+", "Ubuntu 20.04+"],
+    "virtualization": true
+  }
+}

@@ -14,7 +14,10 @@ import {
   ChevronLeft,
   ChevronRight,
   User,
-  Bell
+  Bell,
+  Layers,
+  HelpCircle,
+  Keyboard
 } from 'lucide-react';
 import { useAppStore } from '../../stores/appStore';
 import toast from 'react-hot-toast';
@@ -23,9 +26,10 @@ import NuffiLogo from '../NuffiLogo';
 interface SidebarProps {
   collapsed?: boolean;
   onMenuToggle?: () => void;
+  onShowHelp?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onMenuToggle }) => {
+const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onMenuToggle, onShowHelp }) => {
   const location = useLocation();
   const { scanSystem, loading } = useAppStore();
   // Use props directly instead of local state
@@ -47,6 +51,13 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onMenuToggle }) =>
       label: 'Environment Hub',
       icon: Home,
       description: 'Manage your workspaces'
+    },
+    {
+      id: 'workspaces',
+      path: '/workspaces',
+      label: 'Themed Workspaces',
+      icon: Layers,
+      description: 'Pre-configured environments'
     },
     {
       id: 'create-workspace',
@@ -126,6 +137,11 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onMenuToggle }) =>
       label: 'Workflow Designer',
       description: 'Automate tasks',
       path: '/workflow-designer'
+    },
+    {
+      label: 'Team Setup',
+      description: 'Company onboarding',
+      path: '/team-setup'
     }
   ];
 
@@ -136,18 +152,60 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onMenuToggle }) =>
       animate={{ x: 0, opacity: 1, width: isCollapsed ? 80 : 256 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
     >
-      {/* AI-Enhanced animated background */}
+      {/* Synchronized animated background matching main app background */}
       <motion.div
-        className="absolute inset-0"
+        className="absolute inset-0 pointer-events-none"
+        style={{ zIndex: 1 }}
         animate={{
           background: [
-            "radial-gradient(circle at 20% 20%, rgba(0, 191, 255, 0.1) 0%, transparent 50%)",
-            "radial-gradient(circle at 80% 80%, rgba(76, 175, 80, 0.1) 0%, transparent 50%)",
-            "radial-gradient(circle at 20% 20%, rgba(0, 191, 255, 0.1) 0%, transparent 50%)"
+            "radial-gradient(circle at 15% 30%, rgba(0, 191, 255, 0.08) 0%, transparent 40%), radial-gradient(circle at 80% 80%, rgba(76, 175, 80, 0.06) 0%, transparent 50%)",
+            "radial-gradient(circle at 10% 70%, rgba(139, 92, 246, 0.08) 0%, transparent 40%), radial-gradient(circle at 20% 20%, rgba(0, 191, 255, 0.06) 0%, transparent 50%)",
+            "radial-gradient(circle at 20% 50%, rgba(76, 175, 80, 0.08) 0%, transparent 40%), radial-gradient(circle at 30% 70%, rgba(139, 92, 246, 0.06) 0%, transparent 50%)"
           ]
         }}
-        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+        transition={{ 
+          duration: 20, 
+          repeat: Infinity, 
+          ease: "easeInOut",
+          repeatType: "reverse"
+        }}
       />
+
+      {/* Sidebar-specific particles */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 2 }}>
+        {[...Array(6)].map((_, i) => {
+          const x = Math.random() * 100;
+          const y = Math.random() * 100;
+          return (
+            <motion.div
+              key={`sidebar-particle-${i}`}
+              className="absolute w-0.5 h-0.5 rounded-full"
+              style={{
+                left: `${x}%`,
+                top: `${y}%`,
+                background: i % 3 === 0 
+                  ? 'rgba(0, 191, 255, 0.4)' 
+                  : i % 3 === 1 
+                  ? 'rgba(76, 175, 80, 0.4)' 
+                  : 'rgba(139, 92, 246, 0.3)'
+              }}
+              animate={{
+                opacity: [0.2, 0.6, 0.2],
+                scale: [0.5, 1.2, 0.5],
+                y: [0, -40, 0],
+                x: [0, (Math.random() - 0.5) * 20, 0]
+              }}
+              transition={{
+                duration: 8 + Math.random() * 4,
+                repeat: Infinity,
+                delay: Math.random() * 4,
+                ease: "easeInOut"
+              }}
+            />
+          );
+        })}
+      </div>
+      {/* Synchronized with main AnimatedBackground - no separate background needed */}
 
       {/* Integrated TopBar - part of sidebar */}
       <div className="h-16 border-b border-white/10 flex items-center justify-center px-4 relative z-50">
@@ -217,8 +275,8 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onMenuToggle }) =>
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
             >
-              {/* User Profile & Notifications */}
-              <div className="flex items-center space-x-3">
+              {/* User Profile, Notifications & Settings */}
+              <div className="flex items-center space-x-2 flex-1">
                 {/* User Avatar & Info */}
                 <Link to="/v3-ultimate">
                   <motion.div
@@ -256,7 +314,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onMenuToggle }) =>
 
                 {/* Notifications */}
                 <motion.button
-                  className="relative p-2 rounded-lg hover:bg-bg-quaternary/20 transition-all duration-300"
+                  className="relative p-1.5 rounded-lg hover:bg-bg-quaternary/20 transition-all duration-300"
                   whileHover={{ 
                     scale: 1.05
                   }}
@@ -267,7 +325,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onMenuToggle }) =>
                 >
                   <Bell className="w-4 h-4 text-accent-orange" />
                   <motion.div
-                    className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-br from-accent-red to-accent-orange rounded-full flex items-center justify-center"
+                    className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-gradient-to-br from-accent-red to-accent-orange rounded-full flex items-center justify-center"
                     animate={{
                       scale: [1, 1.2, 1],
                       boxShadow: [
@@ -281,6 +339,44 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onMenuToggle }) =>
                     <span className="text-xs font-bold text-white">3</span>
                   </motion.div>
                 </motion.button>
+
+                {/* Settings - w TopBar */}
+                <Link to="/settings">
+                  <motion.button
+                    className={`relative p-1.5 rounded-lg transition-all duration-300 ${
+                      location.pathname === '/settings' 
+                        ? 'bg-accent-blue/20 text-accent-blue' 
+                        : 'hover:bg-bg-quaternary/20 text-gray-400 hover:text-accent-blue'
+                    }`}
+                    whileHover={{ 
+                      scale: 1.05
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.2, delay: 0.2 }}
+                  >
+                    <Settings className="w-4 h-4" />
+                  </motion.button>
+                </Link>
+
+                {/* Help / Keyboard Shortcuts */}
+                {onShowHelp && (
+                  <motion.button
+                    onClick={onShowHelp}
+                    className="relative p-1.5 rounded-lg hover:bg-bg-quaternary/20 text-gray-400 hover:text-accent-purple transition-all duration-300"
+                    whileHover={{ 
+                      scale: 1.05
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.2, delay: 0.3 }}
+                    title="Keyboard Shortcuts (Press ?)"
+                  >
+                    <Keyboard className="w-4 h-4" />
+                  </motion.button>
+                )}
               </div>
 
               {/* Menu Toggle Button */}
@@ -336,7 +432,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onMenuToggle }) =>
       {/* Main Navigation */}
       <div className="flex-1 overflow-y-auto relative z-10">
         <motion.div 
-          className="p-4 space-y-1"
+          className="p-3 space-y-0.5"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, staggerChildren: 0.1 }}
@@ -354,7 +450,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onMenuToggle }) =>
               >
                 <Link to={item.path}>
                   <motion.div
-                    className={`relative flex items-center ${isCollapsed ? 'justify-center px-3' : 'space-x-3 px-3'} py-3 rounded-lg cursor-pointer group overflow-hidden ${
+                    className={`relative flex items-center ${isCollapsed ? 'justify-center px-3' : 'space-x-3 px-3'} py-2 rounded-lg cursor-pointer group overflow-hidden ${
                       isActive
                         ? 'bg-gradient-to-r from-accent-blue/20 to-accent-green/20 text-white shadow-lg border border-accent-blue/30'
                         : 'text-gray-400 hover:text-white'
@@ -423,12 +519,12 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onMenuToggle }) =>
 
         {/* AI Features Section */}
         <motion.div 
-          className="px-4 py-2 border-t border-white/5 mt-2"
+          className="px-3 py-1.5 border-t border-white/5 mt-1.5"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
         >
-          <div className="space-y-1">
+          <div className="space-y-0.5">
             {aiFeatures.map((feature, index) => {
               const Icon = feature.icon;
               const isActive = location.pathname === feature.path;
@@ -441,7 +537,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onMenuToggle }) =>
                 >
                   <Link to={feature.path || '#'}>
                     <motion.div
-                      className={`relative flex items-center ${isCollapsed ? 'justify-center px-3' : 'space-x-3 px-3'} py-2.5 rounded-lg cursor-pointer group overflow-hidden ${
+                      className={`relative flex items-center ${isCollapsed ? 'justify-center px-3' : 'space-x-3 px-3'} py-1.5 rounded-lg cursor-pointer group overflow-hidden ${
                         isActive ? 'bg-accent-purple/20 text-accent-purple border border-accent-purple/30' : 'hover:bg-white/5'
                       }`}
                       whileHover={{ 
@@ -510,12 +606,12 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onMenuToggle }) =>
 
         {/* Power Features Section */}
         <motion.div 
-          className="px-4 py-2 border-t border-white/5 mt-2"
+          className="px-3 py-1.5 border-t border-white/5 mt-1.5"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2 }}
         >
-          <div className="space-y-1">
+          <div className="space-y-0.5">
             {powerFeatures.map((feature, index) => {
               const isActive = location.pathname === feature.path;
               return (
@@ -527,7 +623,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onMenuToggle }) =>
                 >
                   <Link to={feature.path || '#'}>
                     <motion.div
-                      className={`relative flex items-center ${isCollapsed ? 'justify-center px-3' : 'space-x-3 px-3'} py-2.5 rounded-lg cursor-pointer group overflow-hidden ${
+                      className={`relative flex items-center ${isCollapsed ? 'justify-center px-3' : 'space-x-3 px-3'} py-1.5 rounded-lg cursor-pointer group overflow-hidden ${
                         isActive ? 'bg-accent-orange/20 text-accent-orange border border-accent-orange/30' : 'hover:bg-white/5'
                       }`}
                       whileHover={{ 
@@ -587,84 +683,23 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onMenuToggle }) =>
 
       {/* Footer with Logo */}
       <motion.div 
-        className="p-4 border-t border-white/10 relative z-10 space-y-3"
+        className="p-2 border-t border-white/10 relative z-10 space-y-1"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 1.5 }}
       >
-        {/* Nuffi Logo */}
-        <motion.div 
-          className="flex items-center justify-center space-x-3 mb-3"
-          whileHover={{ scale: 1.02 }}
-        >
-          <NuffiLogo size={40} animate={true} />
-          <AnimatePresence>
-            {!isCollapsed && (
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.2 }}
-              >
-                <motion.h1 
-                  className="font-bold text-xl text-gradient-ai"
-                  animate={{ opacity: [0.8, 1, 0.8] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                >
-                  NUFFI
-                </motion.h1>
-                <motion.p 
-                  className="text-xs text-gray-400 text-center"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                >
-                  AI Dev Environment
-                </motion.p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
 
-        {/* Settings */}
-        <Link to="/settings">
-          <motion.div
-            className={`relative flex items-center ${isCollapsed ? 'justify-center px-3' : 'space-x-3 px-3'} py-2.5 rounded-lg cursor-pointer group overflow-hidden ${
-              location.pathname === '/settings' 
-                ? 'bg-gradient-to-r from-accent-blue/20 to-accent-green/20 text-white border border-accent-blue/30' 
-                : 'hover:bg-white/5'
-            }`}
-            whileHover={{ 
-              scale: 1.02,
-              backgroundColor: "rgba(0, 191, 255, 0.1)"
-            }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ duration: 0.2 }}
-          >
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-accent-blue/10 to-accent-green/10 opacity-0 group-hover:opacity-100"
-              initial={{ x: '-100%' }}
-              whileHover={{ x: 0 }}
-              transition={{ duration: 0.3 }}
-            />
-            
-            <Settings className="w-5 h-5 text-gray-400 group-hover:text-accent-blue transition-colors duration-200 relative z-10" />
-            
-            <AnimatePresence>
-              {!isCollapsed && (
-                <motion.span 
-                  className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors relative z-10"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  Settings
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        </Link>
+
+        {/* Logo NUFFI - na samym dole */}
+        <div className="flex items-center justify-center space-x-3 mt-1">
+          <NuffiLogo size={40} animate={true} />
+          {!isCollapsed && (
+            <div>
+              <h1 className="font-bold text-xl text-gradient-ai">NUFFI</h1>
+              <p className="text-xs text-gray-400 text-center">AI Dev Environment</p>
+            </div>
+          )}
+        </div>
       </motion.div>
 
       {/* Old floating button removed - now using TopBar toggle */}

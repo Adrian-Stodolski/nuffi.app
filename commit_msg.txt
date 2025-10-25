@@ -1,0 +1,4 @@
+Disable auto-git workflow hook and add workspace selection component
+
+- Disabled auto-git-workflow.kiro.hook to prevent automatic commits
+- Added empty WorkspaceSelection.tsx component file for workspace management

@@ -1,0 +1,114 @@
+{
+  "id": "vscode",
+  "name": "Visual Studio Code",
+  "type": "GUI",
+  "category": "editor",
+  "description": "Lightweight but powerful source code editor",
+  "version": "1.85.0",
+  "publisher": "Microsoft",
+  "website": "https://code.visualstudio.com",
+  "platforms": {
+    "windows": {
+      "installer": {
+        "type": "exe",
+        "url": "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user",
+        "checksum": "sha256:abc123def456...",
+        "silentArgs": "/VERYSILENT /MERGETASKS=!runcode",
+        "requiresAdmin": true,
+        "size": "85 MB"
+      },
+      "postInstall": [
+        {
+          "action": "install_extensions",
+          "extensions": [
+            "ms-python.python",
+            "dbaeumer.vscode-eslint",
+            "esbenp.prettier-vscode",
+            "bradlc.vscode-tailwindcss",
+            "ms-vscode.vscode-typescript-next"
+          ]
+        },
+        {
+          "action": "configure_settings",
+          "settingsPath": "%APPDATA%\\Code\\User\\settings.json",
+          "settings": {
+            "editor.formatOnSave": true,
+            "editor.defaultFormatter": "esbenp.prettier-vscode",
+            "editor.codeActionsOnSave": {
+              "source.fixAll.eslint": true
+            },
+            "workbench.colorTheme": "Default Dark+",
+            "editor.fontSize": 14,
+            "editor.tabSize": 2,
+            "files.autoSave": "afterDelay"
+          }
+        }
+      ],
+      "verification": {
+        "command": "code --version",
+        "expectedOutput": "1.85"
+      }
+    },
+    "macos": {
+      "installer": {
+        "type": "dmg",
+        "url": "https://code.visualstudio.com/sha/download?build=stable&os=darwin",
+        "checksum": "sha256:def456ghi789...",
+        "installPath": "/Applications/Visual Studio Code.app",
+        "size": "95 MB"
+      },
+      "postInstall": [
+        {
+          "action": "install_extensions",
+          "extensions": [
+            "ms-python.python",
+            "dbaeumer.vscode-eslint",
+            "esbenp.prettier-vscode",
+            "bradlc.vscode-tailwindcss"
+          ]
+        },
+        {
+          "action": "configure_settings",
+          "settingsPath": "~/Library/Application Support/Code/User/settings.json",
+          "settings": {
+            "editor.formatOnSave": true,
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+          }
+        }
+      ],
+      "verification": {
+        "command": "code --version",
+        "expectedOutput": "1.85"
+      }
+    },
+    "linux": {
+      "installer": {
+        "type": "deb",
+        "url": "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64",
+        "checksum": "sha256:ghi789jkl012...",
+        "installCommand": "sudo dpkg -i $INSTALLER",
+        "size": "75 MB"
+      },
+      "postInstall": [
+        {
+          "action": "install_extensions",
+          "extensions": [
+            "ms-python.python",
+            "dbaeumer.vscode-eslint"
+          ]
+        }
+      ],
+      "verification": {
+        "command": "code --version",
+        "expectedOutput": "1.85"
+      }
+    }
+  },
+  "dependencies": [],
+  "tags": ["editor", "ide", "development", "microsoft"],
+  "requirements": {
+    "minRam": "1 GB",
+    "minDisk": "200 MB",
+    "os": ["Windows 10+", "macOS 10.15+", "Ubuntu 18.04+"]
+  }
+}
