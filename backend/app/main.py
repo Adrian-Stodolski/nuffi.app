@@ -8,10 +8,12 @@ from datetime import datetime
 
 from .routers import workspaces, templates, team, installations
 from .database import engine, Base
-from .models import workspace, template, company, installation
+from .models import workspace, company, installation
 
-# Create database tables
-Base.metadata.create_all(bind=engine)
+# Optionally create database tables (disabled by default to avoid side effects on import)
+AUTO_CREATE_TABLES = os.getenv("AUTO_CREATE_TABLES", "").lower() in ("1", "true", "yes")
+if AUTO_CREATE_TABLES:
+    Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="Nuffi API",

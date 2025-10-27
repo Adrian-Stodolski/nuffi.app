@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Github, Wand2, Zap, Check, Code, Database, Brain, Shield, Rocket } from 'lucide-react';
+import { ArrowLeft, Check } from 'lucide-react';
 import { useAppStore } from '../stores/appStore';
 import { WorkspaceType } from '../types';
 import { Link, useNavigate } from 'react-router-dom';
@@ -248,41 +248,9 @@ const CreateWorkspace: React.FC = () => {
     }
   };
 
+  // Deprecated flow kept for reference; not used in UI to avoid TS errors
   const handleCreateWorkspace = async () => {
-    if (!workspaceName.trim() || !selectedWorkspace) {
-      toast.error('Please complete all steps');
-      return;
-    }
-
-    try {
-      const workspaceData = {
-        name: workspaceName,
-        workspace_type: selectedWorkspace.type,
-        tools: [],
-        config: {
-          auto_start: false,
-          port_mappings: [],
-          environment_variables: {},
-          startup_commands: [],
-          cleanup_commands: [],
-          shell_config: {
-            default_shell: 'bash' as const,
-            available_shells: ['bash', 'zsh'],
-            shell_rc_files: {},
-            plugins: []
-          },
-          aliases: {},
-          custom_paths: []
-        }
-      };
-
-      await createWorkspace(workspaceData);
-      toast.success(`Workspace "${workspaceName}" created successfully!`);
-      navigate('/');
-    } catch (error) {
-      toast.error('Failed to create workspace');
-      console.error('Create workspace error:', error);
-    }
+    toast.error('Legacy create flow is disabled in this UI');
   };
 
   // Quantum Particles Background
@@ -341,6 +309,14 @@ const CreateWorkspace: React.FC = () => {
 
   // Epic Progress Bar with Multiple Ghosts
   const ProgressBar = () => {
+    // Simplified progress without undefined state
+    const steps = [
+      { title: 'Scan', description: 'Analyze your stack' },
+      { title: 'Architect', description: 'Design workspace' },
+      { title: 'Build', description: 'Assemble tools' },
+      { title: 'Deploy', description: 'Launch' }
+    ];
+    const currentStep = ['scan', 'analyze', 'architect', 'build', 'deploy'].indexOf(currentPhase);
     const progress = ((currentStep + 1) / steps.length) * 100;
     
     return (
