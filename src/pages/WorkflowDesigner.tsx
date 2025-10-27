@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 
 const WorkflowDesigner: React.FC = () => {
-  const [selectedWorkflow, setSelectedWorkflow] = useState(null);
+  const [selectedWorkflow, setSelectedWorkflow] = useState<number | null>(null);
 
   const containerVariants = {
     hidden: { opacity: 0 },

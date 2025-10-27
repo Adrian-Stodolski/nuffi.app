@@ -1,5 +1,5 @@
 import { invoke } from '@tauri-apps/api/core';
-import { Workspace, WorkspaceConfig, CreateWorkspaceRequest, InstalledTool, WorkspaceType } from '../types';
+import { Workspace, WorkspaceConfig, CreateWorkspaceRequest, InstalledTool, WorkspaceType, ToolRequirement } from '../types';
 
 export class WorkspaceManager {
   private static instance: WorkspaceManager;
@@ -32,7 +32,9 @@ export class WorkspaceManager {
       name: request.name,
       type: request.workspace_type,
       status: 'inactive',
-      tools: request.tools.map(toolName => this.createMockTool(toolName)),
+      tools: request.tools.map((t: ToolRequirement | string) =>
+        this.createMockTool(typeof t === 'string' ? t : t.name)
+      ),
       config: request.config || this.getDefaultConfig(),
       resource_usage: {
         cpu: 0,
@@ -280,7 +282,16 @@ export class WorkspaceManager {
       port_mappings: [],
       environment_variables: {},
       startup_commands: [],
-      cleanup_commands: []
+      cleanup_commands: [],
+      // provide minimal defaults for strict types
+      shell_config: {
+        default_shell: 'bash',
+        available_shells: ['bash'],
+        shell_rc_files: {},
+        plugins: []
+      },
+      aliases: {},
+      custom_paths: []
     };
   }
 
@@ -334,9 +345,4 @@ export class WorkspaceManager {
 }
 
 // Export interface for creating workspaces
-export interface CreateWorkspaceRequest {
-  name: string;
-  workspace_type: WorkspaceType;
-  tools: string[];
-  config?: WorkspaceConfig;
-}
+// (Removed local CreateWorkspaceRequest; using shared type from ../types)
